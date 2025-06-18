@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 17:08:00 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 15:22:56 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <stdbool.h>
 # include "colors.h"
 
@@ -61,15 +63,16 @@ typedef struct s_data
 
 //parse.c
 char	**parse_line(const char *line);
-bool	is_redirection(char *str);
-void	identify_tokens(t_data *data);
 
 //path.c
 char	*find_cmd_path(char *cmd, char **path);
 char	*get_cmd_path(char *cmd, char **env);
+int		is_valid_dir(char *path);
+void	go_to(char *path);
 
 //command.c
 int		split_cmd(char *command, char **env, char ***args, char **path);
+int		exec_builtin(t_token *token, t_data *data);
 void	execute_command(char *command, char **env);
 
 //signals.c
@@ -90,11 +93,11 @@ void	token_add_back(t_token **lst, t_token *new);
 void	create_add_token(t_data *data);
 
 //builtins.c
-int		exec_builtin(t_token *token, t_data *data);
 int		is_builtin(char *cmd);
 int		builtin_echo(t_token *token);
 int		builtin_exit(t_data *data);
 int		builtin_pwd(void);
+int		builtin_cd(t_token *token, t_data *data);
 
 //lbft
 char	*ft_str_threejoin(char const *s1, char const *s2, char const *s3);

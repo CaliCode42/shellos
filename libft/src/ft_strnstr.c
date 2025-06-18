@@ -6,9 +6,11 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:34:56 by tcali             #+#    #+#             */
-/*   Updated: 2025/04/29 10:07:22 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/16 18:16:12 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <unistd.h>
 
 /*
 The strnstr() function locates the first occurrence of the  null-terminated  
@@ -16,8 +18,6 @@ string little in the string big, where not more than len characters are
 searched. Characters that appear after	a `\0'	character  are not  searched.
 Returns a pointer to beginning of str little, or NULL if not found.
 */
-#include <unistd.h>
-
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;

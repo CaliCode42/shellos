@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:41:32 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/12 14:10:53 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 15:28:07 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,6 @@ int	is_builtin(char *cmd)
 		|| !ft_strncmp(cmd, "unset", 6)
 		|| !ft_strncmp(cmd, "env", 4)
 		|| !ft_strncmp(cmd, "exit", 5));
-}
-
-int	exec_builtin(t_token *token, t_data *data)
-{
-	if (!ft_strncmp(token->str, "echo", 5))
-		return (builtin_echo(token));
-	// if (!ft_strncmp(token->str, "cd", 3))
-	// 	return (builtin_cd(token, data));
-	if (!ft_strncmp(token->str, "pwd", 4))
-		return (builtin_pwd());
-	if (!ft_strncmp(token->str, "exit", 5))
-		return (builtin_exit(data));
-	return (1);
 }
 
 int	builtin_echo(t_token *token)
@@ -80,5 +67,32 @@ int	builtin_pwd(void)
 	}
 	printf("%s\n", cwd);
 	free(cwd);
+	return (0);
+}
+
+/*********************************************************************/
+/*
+	define next token as an arg.
+	if arg == ".." >> close current directory and get back to previous
+	if arg is a valid path and access is authorized, go to directory
+	if no arg given, and HOME define go to HOME
+*/
+/*********************************************************************/
+int	builtin_cd(t_token *token, t_data *data)
+{
+	char	*path;
+
+	(void)data;
+	if (!token || !token->next || !token->next->str)
+	{
+		path = getenv("HOME");
+		if (!path)
+			return (perror("cd : HOME not set\n"), 1);
+	}
+	else
+		path = token->next->str;
+	if (!is_valid_dir(path))
+		return (1);
+	go_to(path);
 	return (0);
 }

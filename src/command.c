@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 11:43:28 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 13:38:49 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	split_cmd(char *command, char **env, char ***args, char **path)
 	return (0);
 }
 
-char	*exec_bin(char *command, char **args)
+static char	*exec_bin(char *command, char **args)
 {
 	args = malloc(sizeof(char *) * 4);
 	if (!args)
@@ -42,6 +42,19 @@ char	*exec_bin(char *command, char **args)
 	return (ft_strdup("/bin/sh"));
 }
 
+int	exec_builtin(t_token *token, t_data *data)
+{
+	if (!ft_strncmp(token->str, "echo", 5))
+		return ((printf("builtin executed\n")), builtin_echo(token));
+	if (!ft_strncmp(token->str, "cd", 3))
+		return ((printf("builtin executed\n")), builtin_cd(token, data));
+	if (!ft_strncmp(token->str, "pwd", 4))
+		return ((printf("builtin executed\n")), builtin_pwd());
+	if (!ft_strncmp(token->str, "exit", 5))
+		return ((printf("builtin executed\n")), builtin_exit(data));
+	return (1);
+}
+
 void	execute_command(char *command, char **env)
 {
 	char	**args;
@@ -49,7 +62,10 @@ void	execute_command(char *command, char **env)
 
 	if (ft_strchr(command, ';') || ft_strchr(command, '&')
 		|| ft_strchr(command, '|') || ft_strchr(command, '*'))
+	{
 		path = exec_bin(command, args);
+		return ;
+	}
 	else
 	{
 		if (split_cmd(command, env, &args, &path) == -1)

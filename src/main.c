@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:29:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 17:07:42 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 13:42:00 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ void	parent(t_data *data)
 
 void	check_ctrl_slash(t_token *current)
 {
-	t_token	*next_two;
+	t_token	*new_next;
 
-	next_two = NULL;
+	new_next = NULL;
 	if (current->next && current->next->str)
 	{
 		if (current->next->next)
-			next_two = current->next->next;
+			new_next = current->next->next;
 		current->str = ft_str_threejoin(current->str, " ", current->next->str);
 		free(current->next->str);
 		free(current->next);
-		current->next = next_two;
+		current->next = new_next;
 	}
 }
 
@@ -67,6 +67,7 @@ void	fork_process(t_data *data)
 				exec_builtin(current, data);
 			else
 			{
+				printf("not a builtin\n");
 				data->pid = fork();
 				if (data->pid == 0)
 					child(data);
