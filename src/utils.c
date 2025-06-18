@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:12:28 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:22:22 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	free_list(t_token **lst)
 	}
 }
 
-
 void	check_type(t_token *token)
 {
 	t_token	*current;
@@ -64,4 +63,19 @@ void	check_type(t_token *token)
 		}
 		current = current->next;
 	}
+}
+
+void	add_arg(t_token *current)
+{
+	t_token	*new_next;
+
+	new_next = NULL;
+	if (!current->next || !current->next->str)
+		return ;
+	if (current->next->next)
+		new_next = current->next->next;
+	current->str = ft_str_threejoin(current->str, " ", current->next->str);
+	free(current->next->str);
+	free(current->next);
+	current->next = new_next;
 }

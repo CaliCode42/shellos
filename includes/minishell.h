@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 15:22:56 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:21:01 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	free_minishell(t_data *data);
 void	free_array(char **array);
 void	free_list(t_token **lst);
 void	check_type(t_token *token);
+void	add_arg(t_token *current);
 
 //list.c
 t_token	*new_token(char *str, int i);

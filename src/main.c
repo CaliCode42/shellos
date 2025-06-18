@@ -6,31 +6,14 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:29:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:16:06 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:22:39 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_arg(t_token *current)
-{
-	t_token	*new_next;
-
-	new_next = NULL;
-	if (!current->next || !current->next->str)
-		return ;
-	if (current->next->next)
-		new_next = current->next->next;
-	current->str = ft_str_threejoin(current->str, " ", current->next->str);
-	free(current->next->str);
-	free(current->next);
-	current->next = new_next;
-}
-
 void	child(t_data *data)
 {
-	//signal(SIGQUIT, SIG_DFL);
-	//signal(SIGINT, SIG_DFL);
 	execute_command(data->token->str, data->envp);
 	exit(1);
 }
@@ -66,9 +49,6 @@ void	fork_process(t_data *data)
 			{
 				while (current->next && current->next->type == ARG)
 					add_arg(current);
-				//print_token(data);
-				//printf("not a builtin\n");
-				//printf("command : %s\n", current->str);
 				data->pid = fork();
 				if (data->pid == 0)
 					child(data);
