@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:34:28 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:18:03 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 13:46:19 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void	init_data(t_data *data, char **env)
 	data->token = NULL;
 	data->nb_pipes = count_pipes(data);
 	data->pipe_fd = safe_malloc(sizeof(int *) * data->nb_pipes);
+	data->array_alloc = true;
 	create_add_token(data);
 }

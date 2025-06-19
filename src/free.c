@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:31:56 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:10:03 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 13:02:21 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	free_array(char **array)
 	while (array[i])
 		free(array[i++]);
 	free(array);
+	array = NULL;
 }
 
 void	free_list(t_token **lst)

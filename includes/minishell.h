@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:10:34 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 13:45:42 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 	pid_t	pid;
 	char	*line;
 	char	**tokens;
+	bool	array_alloc;
 	t_token	*token;
 	char	**envp;
 	char	*file1;

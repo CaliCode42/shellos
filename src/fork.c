@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:15:26 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 15:09:03 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,23 @@
 
 void	child(t_data *data, int i)
 {
-	if (i > 0)
-		dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
-	if (i < data->nb_pipes - 1)
-		dup2(data->pipe_fd[i][1], STDOUT_FILENO);
-	close_pipes(data->pipe_fd, data->nb_pipes - 1, data);
-	execute_command(data->token->str, data->envp);
-	exit(EXIT_FAILURE);
+	if (!data->nb_pipes)
+	{
+		printf("command = %s\n", data->token->str);
+		execute_command(data->token->str, data->envp);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		if (i > 0)
+			dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
+		if (i < data->nb_pipes)
+			dup2(data->pipe_fd[i][1], STDOUT_FILENO);
+		close_pipes(data->pipe_fd, data->nb_pipes - 1, data);
+		printf("command = %s\n", data->tokens[i]);
+		execute_command(data->tokens[i], data->envp);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	parent(t_data *data, int i)
@@ -29,8 +39,17 @@ void	parent(t_data *data, int i)
 	int	sig;
 
 	(void)i;
-	close_pipes(data->pipe_fd, data->nb_pipes, data);
-	free_pipes(data->pipe_fd, data->nb_pipes, data);
+	if (data->nb_pipes && i == data->nb_pipes)
+	{
+		close_pipes(data->pipe_fd, data->nb_pipes, data);
+		free_pipes(data->pipe_fd, data->nb_pipes, data);
+		//data->nb_pipes = 0;
+		if (data->array_alloc == true)
+		{
+			free_array(data->tokens);
+			data->array_alloc = false;
+		}
+	}
 	waitpid(data->pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
@@ -65,6 +84,39 @@ void	create_child(t_data *data)
 	}
 }
 
+void	token_to_array(t_token *token, t_data *data, int n)
+{
+	int		i;
+	t_token	*current;
+
+	i = 0;
+	current = token;
+	data->tokens = safe_malloc(sizeof(char *) * (n + 1));
+	while (i < n + 1 && current)
+	{
+		if (!ft_strncmp(current->str, "|", 2))
+		{
+			if (!current->next)
+			{
+				//need to print new prompt waiting for pipe instruction
+				//(pipe>)
+				break ;
+			}
+			current = current->next;
+		}
+		data->tokens[i] = ft_strdup(current->str);
+		i++;
+		current = current->next;
+	}
+	i = 0;
+	while (data->tokens[i])
+	{
+		printf("tokens[%d] = %s\n", i, data->tokens[i]);
+		i++;
+	}
+	data->array_alloc = true;
+}
+
 void	fork_process(t_data *data)
 {
 	t_token	*current;
@@ -78,8 +130,15 @@ void	fork_process(t_data *data)
 				exec_builtin(current, data);
 			else
 			{
+				printf("cmd = %s\n", current->str);
+				if (current->next && current->next->str)
+					printf("next cmd = %s\n", current->next->str);
 				while (current->next && current->next->type == ARG)
 					add_arg(current);
+				if (data->nb_pipes)
+				{
+					token_to_array(data->token, data, data->nb_pipes);
+				}
 				create_child(data);
 			}
 		}
