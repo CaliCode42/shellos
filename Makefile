@@ -11,6 +11,8 @@ SRC := \
 	builtins.c \
 	command.c \
 	debug.c \
+	fork.c \
+	free.c \
 	init.c \
 	list.c \
 	main.c \

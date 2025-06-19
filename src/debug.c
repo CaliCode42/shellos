@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:28:45 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 17:07:38 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:02:51 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	print_token(t_data *data)
 	char	*str;
 
 	current = data->token;
+	str = NULL;
 	while (current)
 	{
 		if (current->type == CMD)

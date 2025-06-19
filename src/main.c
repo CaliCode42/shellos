@@ -6,61 +6,11 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:29:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:22:39 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 11:35:35 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	child(t_data *data)
-{
-	execute_command(data->token->str, data->envp);
-	exit(1);
-}
-
-void	parent(t_data *data)
-{
-	int	status;
-	int	sig;
-
-	waitpid(data->pid, &status, 0);
-	if (WIFSIGNALED(status))
-	{
-		sig = WTERMSIG(status);
-		if (sig == SIGQUIT)
-			printf("Quit (Core dumped)\n");
-		else if (sig == SIGINT)
-			printf("\n");
-	}
-}
-
-void	fork_process(t_data *data)
-{
-	t_token	*current;
-
-	current = data->token;
-	while (current)
-	{
-		if (current->type == CMD)
-		{
-			if (is_builtin(current->str))
-				exec_builtin(current, data);
-			else
-			{
-				while (current->next && current->next->type == ARG)
-					add_arg(current);
-				data->pid = fork();
-				if (data->pid == 0)
-					child(data);
-				else if (data->pid > 0)
-					parent(data);
-				else
-					perror("fork");
-			}
-		}
-		current = current->next;
-	}
-}
 
 void	get_line(t_data *data, char **envp, char *line)
 {

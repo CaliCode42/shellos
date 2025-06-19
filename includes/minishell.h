@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:21:01 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:10:34 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	int		pipe_fd[2];
+	int		**pipe_fd;
 	pid_t	pid;
 	char	*line;
 	char	**tokens;
@@ -59,6 +59,7 @@ typedef struct s_data
 	char	*file1;
 	char	*file2;
 	int		nb_tokens;
+	int		nb_pipes;
 }		t_data;
 
 //parse.c
@@ -79,19 +80,19 @@ void	execute_command(char *command, char **env);
 void	handle_sigint(int sig);
 
 //init.c
+int		count_pipes(t_data *data);
+void	init_pipes(int **pipes, int n);
 void	init_data(t_data *data, char **env);
 
 //utils.c
-void	free_minishell(t_data *data);
-void	free_array(char **array);
-void	free_list(t_token **lst);
+void	close_pipes(int **pipes, int n, t_data *data);
 void	check_type(t_token *token);
-void	add_arg(t_token *current);
 
 //list.c
 t_token	*new_token(char *str, int i);
 void	token_add_back(t_token **lst, t_token *new);
 void	create_add_token(t_data *data);
+void	add_arg(t_token *current);
 
 //builtins.c
 int		is_builtin(char *cmd);
@@ -106,6 +107,18 @@ char	*ft_str_threejoin(char const *s1, char const *s2, char const *s3);
 //debug.c
 void	print_token(t_data *data);
 void	reset_colors(void);
+
+//free.c
+void	free_minishell(t_data *data);
+void	free_array(char **array);
+void	free_list(t_token **lst);
+void	free_pipes(int **pipes, int n, t_data *data);
+
+//fork.c
+void	child(t_data *data, int i);
+void	parent(t_data *data, int i);
+void	create_child(t_data *data);
+void	fork_process(t_data *data);
 
 #endif
 /*

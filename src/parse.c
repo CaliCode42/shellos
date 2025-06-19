@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:26:29 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/12 14:39:05 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:01:52 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	**parse_line(const char *line)
 
 	tokens = safe_malloc(sizeof(char *) * (count_tokens(line) + 1));
 	i = 0;
-	len = 0;
 	while (*line)
 	{
 		while (*line && ft_isspace(*line))

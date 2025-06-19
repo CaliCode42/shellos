@@ -6,11 +6,46 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:34:28 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 11:28:52 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:18:03 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_pipes(t_data *data)
+{
+	int	nb_pipes;
+	int	i;
+
+	nb_pipes = 0;
+	i = 0;
+	if (data->nb_tokens <= 1)
+		return (0);
+	while (data->tokens[i])
+	{
+		if (!ft_strncmp(data->tokens[i], "|", 2))
+		{
+			printf("increase nb_pipes : %d\n", nb_pipes);
+			nb_pipes++;
+		}
+		i++;
+	}
+	return (nb_pipes);
+}
+
+void	init_pipes(int **pipes, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		pipes[i] = safe_malloc(sizeof(int) * 2);
+		if (pipe(pipes[i]) == -1)
+			perror("pipe\n");
+		i++;
+	}
+}
 
 void	init_data(t_data *data, char **env)
 {
@@ -25,5 +60,7 @@ void	init_data(t_data *data, char **env)
 		i++;
 	data->nb_tokens = i;
 	data->token = NULL;
+	data->nb_pipes = count_pipes(data);
+	data->pipe_fd = safe_malloc(sizeof(int *) * data->nb_pipes);
 	create_add_token(data);
 }

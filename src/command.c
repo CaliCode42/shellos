@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:02:16 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/19 12:13:07 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	execute_command(char *command, char **env)
 {
 	char	**args;
 	char	*path;
-	int		i;
+	// int		i;
 
 	if (ft_strchr(command, ';') || ft_strchr(command, '&')
 		|| ft_strchr(command, '|') || ft_strchr(command, '*'))
@@ -74,12 +74,12 @@ void	execute_command(char *command, char **env)
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	i = 0;
-	while (args[i])
-	{
-		printf("args[%d] = [%s]\n", i, args[i]);
-		i++;
-	}
+	// i = 0;
+	// while (args[i])
+	// {
+	// 	printf("args[%d] = [%s]\n", i, args[i]);
+	// 	i++;
+	// }
 	if (execve(path, args, env) == -1)
 	{
 		if (path != args[0])

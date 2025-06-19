@@ -46,7 +46,7 @@ like in bash. +++DONE+++
 
 • Your shell must implement the following built-in commands:
 	◦ echo with option -n +++DONE+++
-	◦ cd with only a relative or absolute path
+	◦ cd with only a relative or absolute path +++DONE++
 	◦ pwd with no options +++DONE+++ (I THINK ??)
 	◦ export with no options
 	◦ unset with no options
