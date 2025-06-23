@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 15:09:03 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 13:56:34 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	child(t_data *data, int i)
 {
 	if (!data->nb_pipes)
 	{
-		printf("command = %s\n", data->token->str);
+		printf("!nb_pipes\ncommand = %s\n", data->token->str);
 		execute_command(data->token->str, data->envp);
+		free_pids(data);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -26,10 +27,29 @@ void	child(t_data *data, int i)
 			dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
 		if (i < data->nb_pipes)
 			dup2(data->pipe_fd[i][1], STDOUT_FILENO);
-		close_pipes(data->pipe_fd, data->nb_pipes - 1, data);
-		printf("command = %s\n", data->tokens[i]);
-		execute_command(data->tokens[i], data->envp);
+		close_pipes(data->pipe_fd, data->nb_pipes, data);
+		ft_printf_fd(1, "cmds[%d] = %s\n", i, data->cmds[i]);
+		execute_command(data->cmds[i], data->envp);
+		free_pids(data);
 		exit(EXIT_FAILURE);
+	}
+}
+
+void	wait_all(t_data *data, int *last_status)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	status = 0;
+	while (i <= data->nb_pipes)
+	{
+		if (data->pids[i] > 0)
+		{
+			waitpid(data->pids[i], &status, 0);
+			*last_status = status;
+		}
+		i++;
 	}
 }
 
@@ -38,26 +58,25 @@ void	parent(t_data *data, int i)
 	int	status;
 	int	sig;
 
-	(void)i;
+	status = 0;
 	if (data->nb_pipes && i == data->nb_pipes)
 	{
 		close_pipes(data->pipe_fd, data->nb_pipes, data);
-		free_pipes(data->pipe_fd, data->nb_pipes, data);
-		//data->nb_pipes = 0;
-		if (data->array_alloc == true)
-		{
-			free_array(data->tokens);
-			data->array_alloc = false;
-		}
 	}
-	waitpid(data->pid, &status, 0);
+	wait_all(data, &status);
 	if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
 		if (sig == SIGQUIT)
+		{
+			free_pids(data);
 			printf("Quit (Core dumped)\n");
+		}
 		else if (sig == SIGINT)
+		{
+			free_pids(data);
 			printf("\n");
+		}
 	}
 }
 
@@ -66,14 +85,14 @@ void	create_child(t_data *data)
 	int	i;
 
 	i = 0;
-	init_pipes(data->pipe_fd, data->nb_pipes);
+	data->pids = safe_malloc(sizeof(pid_t) * (data->nb_pipes + 1));
+	init_pids(data);
 	while (i <= data->nb_pipes)
 	{
-		printf("nb_pipes = %d\n", data->nb_pipes);
-		data->pid = fork();
-		if (data->pid == 0)
+		data->pids[i] = fork();
+		if (data->pids[i] == 0)
 			child(data, i);
-		else if (data->pid > 0)
+		else if (data->pids[i] > 0)
 			parent(data, i);
 		else
 		{
@@ -82,39 +101,11 @@ void	create_child(t_data *data)
 		}
 		i++;
 	}
-}
-
-void	token_to_array(t_token *token, t_data *data, int n)
-{
-	int		i;
-	t_token	*current;
-
-	i = 0;
-	current = token;
-	data->tokens = safe_malloc(sizeof(char *) * (n + 1));
-	while (i < n + 1 && current)
+	if (data->array_alloc == true)
 	{
-		if (!ft_strncmp(current->str, "|", 2))
-		{
-			if (!current->next)
-			{
-				//need to print new prompt waiting for pipe instruction
-				//(pipe>)
-				break ;
-			}
-			current = current->next;
-		}
-		data->tokens[i] = ft_strdup(current->str);
-		i++;
-		current = current->next;
+		free_array(data->cmds, 0);
+		data->array_alloc = false;
 	}
-	i = 0;
-	while (data->tokens[i])
-	{
-		printf("tokens[%d] = %s\n", i, data->tokens[i]);
-		i++;
-	}
-	data->array_alloc = true;
 }
 
 void	fork_process(t_data *data)
@@ -130,16 +121,21 @@ void	fork_process(t_data *data)
 				exec_builtin(current, data);
 			else
 			{
-				printf("cmd = %s\n", current->str);
-				if (current->next && current->next->str)
-					printf("next cmd = %s\n", current->next->str);
-				while (current->next && current->next->type == ARG)
-					add_arg(current);
+				//printf("cmd = %s\n", current->str);
+				//if (current->next && current->next->str)
+				//	printf("next cmd = %s\n", current->next->str);
+				//while (current->next && current->next->type == ARG)
+				//	add_arg(current);
 				if (data->nb_pipes)
 				{
+					printf("calling tkn to arr\n");
 					token_to_array(data->token, data, data->nb_pipes);
+					create_child(data);
+					free_pipes(data->pipe_fd, data->nb_pipes, data);
+					return ;
 				}
 				create_child(data);
+				//free(data->pids);
 			}
 		}
 		current = current->next;

@@ -6,11 +6,51 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:26:29 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:01:52 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 13:44:23 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	token_to_array(t_token *token, t_data *data, int n)
+{
+	int		i;
+	t_token	*current;
+
+	i = 0;
+	current = token;
+	data->cmds = safe_malloc(sizeof(char *) * (n + 2));
+	while (i < n + 1 && current)
+	{
+		if (!ft_strncmp(current->str, "|", 2))
+		{
+			if (!current->next)
+			{
+				//need to print new prompt waiting for pipe instruction
+				//(pipe>)
+				break ;
+			}
+			current = current->next;
+		}
+		printf("(%d)current->str = %s\n", current->pos, current->str);
+		data->cmds[i] = ft_strdup(current->str);
+		if (!data->cmds[i])
+		{
+			free_array(data->tokens, 0);
+			perror("ft_strdup failed\n");
+		}
+		i++;
+		current = current->next;
+	}
+	data->cmds[i] = NULL;
+	i = 0;
+	while (data->cmds[i])
+	{
+		printf("cmds[%d] = %s\n", i, data->cmds[i]);
+		i++;
+	}
+	data->array_alloc = true;
+}
 
 static int	count_tokens(char const *s)
 {

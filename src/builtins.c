@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:41:32 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 16:21:49 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 11:14:02 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	builtin_echo(t_token *token)
 
 int	builtin_exit(t_data *data)
 {
-	free_minishell(data);
 	printf("exit\n");
+	free_minishell(data);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

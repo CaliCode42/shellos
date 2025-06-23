@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:22:04 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/18 15:26:20 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/20 13:43:12 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ char	*get_cmd_path(char *cmd, char **env)
 	while (ft_strnstr(env[i], "PATH=", 5) == 0)
 		i++;
 	path = ft_split(env[i] + 5, ':');
-	bin = find_cmd_path(cmd, path);
-	if (!bin)
-	{
-		free_array(path);
+	if (!path)
 		return (NULL);
-	}
+	bin = find_cmd_path(cmd, path);
+	free_array(path, 0);
+	if (!bin)
+		return (NULL);
 	return (bin);
 }
 

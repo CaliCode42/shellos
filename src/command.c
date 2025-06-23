@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 12:13:07 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 13:56:00 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	split_cmd(char *command, char **env, char ***args, char **path)
 	*args = ft_split(command, ' ');
 	if (!*args || !*args[0])
 	{
-		free_array(*args);
+		free_array(*args, 0);
 		error_exit("command not found\n");
 	}
 	*path = get_cmd_path((*args)[0], env);
 	if (!*path)
 	{
 		ft_printf_fd(2, "%s : command not found\n", (*args)[0]);
-		free_array(*args);
+		free_array(*args, 0);
 		return (-1);
 	}
 	return (0);
@@ -82,10 +82,10 @@ void	execute_command(char *command, char **env)
 	// }
 	if (execve(path, args, env) == -1)
 	{
-		if (path != args[0])
-			free(path);
-		free_array(args);
-		printf("error executing command");
-		return ;
+		perror("execve\n");
+		free(path);
+		free_array(args, 0);
+		//printf("error executing command\n");
+		exit(EXIT_FAILURE);
 	}
 }

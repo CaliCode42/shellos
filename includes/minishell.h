@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 13:45:42 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 13:33:14 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ typedef struct s_token
 typedef struct s_data
 {
 	int		**pipe_fd;
-	pid_t	pid;
+	pid_t	*pids;
 	char	*line;
 	char	**tokens;
+	char	**cmds;
 	bool	array_alloc;
 	t_token	*token;
 	char	**envp;
@@ -64,6 +65,7 @@ typedef struct s_data
 }		t_data;
 
 //parse.c
+void	token_to_array(t_token *token, t_data *data, int n);
 char	**parse_line(const char *line);
 
 //path.c
@@ -83,6 +85,7 @@ void	handle_sigint(int sig);
 //init.c
 int		count_pipes(t_data *data);
 void	init_pipes(int **pipes, int n);
+void	init_pids(t_data *data);
 void	init_data(t_data *data, char **env);
 
 //utils.c
@@ -111,9 +114,10 @@ void	reset_colors(void);
 
 //free.c
 void	free_minishell(t_data *data);
-void	free_array(char **array);
+void	free_array(char **array, int size);
 void	free_list(t_token **lst);
 void	free_pipes(int **pipes, int n, t_data *data);
+void	free_pids(t_data *data);
 
 //fork.c
 void	child(t_data *data, int i);

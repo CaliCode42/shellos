@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:29:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 11:35:35 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 12:34:00 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	get_line(t_data *data, char **envp, char *line)
 		free(line);
 		free_list(&data->token);
 		data->token = NULL;
+		data->nb_pipes = 0;
 	}
 }
 
