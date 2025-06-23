@@ -28,7 +28,7 @@ metacharacters in the quoted sequence except for $.
 	◦ >> should redirect output in append mode.
 
 • Implement pipes. The output of each command in the pipelines
-is connected to the input of the next command via a pipe.
+is connected to the input of the next command via a pipe. +++DONE+++
 
 • Handle environment variables ($****) which should expand to
 their values.
@@ -47,7 +47,7 @@ like in bash. +++DONE+++
 • Your shell must implement the following built-in commands:
 	◦ echo with option -n +++DONE+++
 	◦ cd with only a relative or absolute path +++DONE++
-	◦ pwd with no options +++DONE+++ (I THINK ??)
+	◦ pwd with no options +++DONE+++
 	◦ export with no options
 	◦ unset with no options
 	◦ env with no options or arguments

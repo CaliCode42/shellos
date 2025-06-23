@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:10:02 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:49:57 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:44:46 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,13 @@ void	create_add_token(t_data *data)
 	while (data->tokens[i])
 	{
 		new = new_token(data->tokens[i], i);
-		printf("creating token[%d] = %s\n", i, data->tokens[i]);
 		token_add_back(&data->token, new);
 		i++;
 	}
 	free_array(data->tokens, 0);
 	data->array_alloc = false;
-	check_type(data->token);
-	//print_token(data);
+	check_type(data->token, data);
+	print_token(data);
 }
 
 void	add_arg(t_token *current)
@@ -93,5 +92,4 @@ void	add_arg(t_token *current)
 	free(current->next->str);
 	free(current->next);
 	current->next = new_next;
-	printf("cmd = %s\n", current->str);
 }

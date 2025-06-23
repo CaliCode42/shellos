@@ -6,51 +6,50 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:56:34 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:36:22 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	handle_pipes(t_data *data, int i)
+{
+	if (i > 0)
+	{
+		if (data->input == -1)
+			dup2(data->pipe_fd[i - 1][data->input], STDIN_FILENO);
+	}
+	if (i < data->nb_pipes)
+	{
+		if (data->output == -1)
+			dup2(data->pipe_fd[i][1], STDOUT_FILENO);
+	}
+	close_pipes(data->pipe_fd, data->nb_pipes, data);
+	execute_command(data->cmds[i], data->envp);
+	free_pids(data);
+	exit(EXIT_FAILURE);
+}
+
 void	child(t_data *data, int i)
 {
+	if (data->input != -1)
+	{
+		dup2(data->input, STDIN_FILENO);
+		close(data->input);
+	}
+	if (data->output != -1)
+	{
+		dup2(data->output, STDOUT_FILENO);
+		close(data->output);
+	}
 	if (!data->nb_pipes)
 	{
-		printf("!nb_pipes\ncommand = %s\n", data->token->str);
 		execute_command(data->token->str, data->envp);
 		free_pids(data);
 		exit(EXIT_FAILURE);
 	}
 	else
-	{
-		if (i > 0)
-			dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
-		if (i < data->nb_pipes)
-			dup2(data->pipe_fd[i][1], STDOUT_FILENO);
-		close_pipes(data->pipe_fd, data->nb_pipes, data);
-		ft_printf_fd(1, "cmds[%d] = %s\n", i, data->cmds[i]);
-		execute_command(data->cmds[i], data->envp);
-		free_pids(data);
-		exit(EXIT_FAILURE);
-	}
-}
-
-void	wait_all(t_data *data, int *last_status)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	status = 0;
-	while (i <= data->nb_pipes)
-	{
-		if (data->pids[i] > 0)
-		{
-			waitpid(data->pids[i], &status, 0);
-			*last_status = status;
-		}
-		i++;
-	}
+		handle_pipes(data, i);
 }
 
 void	parent(t_data *data, int i)
@@ -106,6 +105,7 @@ void	create_child(t_data *data)
 		free_array(data->cmds, 0);
 		data->array_alloc = false;
 	}
+	free_pids(data);
 }
 
 void	fork_process(t_data *data)
@@ -121,21 +121,14 @@ void	fork_process(t_data *data)
 				exec_builtin(current, data);
 			else
 			{
-				//printf("cmd = %s\n", current->str);
-				//if (current->next && current->next->str)
-				//	printf("next cmd = %s\n", current->next->str);
-				//while (current->next && current->next->type == ARG)
-				//	add_arg(current);
 				if (data->nb_pipes)
 				{
-					printf("calling tkn to arr\n");
 					token_to_array(data->token, data, data->nb_pipes);
 					create_child(data);
 					free_pipes(data->pipe_fd, data->nb_pipes, data);
 					return ;
 				}
 				create_child(data);
-				//free(data->pids);
 			}
 		}
 		current = current->next;

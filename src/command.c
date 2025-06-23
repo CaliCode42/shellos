@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:56:00 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 16:25:41 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static char	*exec_bin(char *command, char **args)
 int	exec_builtin(t_token *token, t_data *data)
 {
 	if (!ft_strncmp(token->str, "echo", 5))
-		return ((printf("builtin executed\n")), builtin_echo(token));
+		return (builtin_echo(token));
 	if (!ft_strncmp(token->str, "cd", 3))
-		return ((printf("builtin executed\n")), builtin_cd(token, data));
+		return (builtin_cd(token, data));
 	if (!ft_strncmp(token->str, "pwd", 4))
-		return ((printf("builtin executed\n")), builtin_pwd());
+		return (builtin_pwd());
 	if (!ft_strncmp(token->str, "exit", 5))
-		return ((printf("builtin executed\n")), builtin_exit(data));
+		return (builtin_exit(data));
 	return (1);
 }
 
@@ -59,7 +59,6 @@ void	execute_command(char *command, char **env)
 {
 	char	**args;
 	char	*path;
-	// int		i;
 
 	if (ft_strchr(command, ';') || ft_strchr(command, '&')
 		|| ft_strchr(command, '|') || ft_strchr(command, '*'))
@@ -74,18 +73,12 @@ void	execute_command(char *command, char **env)
 	}
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	// i = 0;
-	// while (args[i])
-	// {
-	// 	printf("args[%d] = [%s]\n", i, args[i]);
-	// 	i++;
-	// }
 	if (execve(path, args, env) == -1)
 	{
 		perror("execve\n");
 		free(path);
 		free_array(args, 0);
-		//printf("error executing command\n");
+		printf("error executing command\n");
 		exit(EXIT_FAILURE);
 	}
 }

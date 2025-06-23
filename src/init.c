@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:34:28 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:33:48 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:05:17 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,16 @@ void	init_data(t_data *data, char **env)
 
 	i = 0;
 	data->pids = NULL;
-	data->envp = env;
-	data->file1 = NULL;
-	data->file2 = NULL;
+	data->input = -1;
+	data->output = -1;
 	data->cmds = NULL;
+	data->token = NULL;
+	data->pipe_fd = NULL;
 	while (data->tokens[i])
 		i++;
 	data->nb_tokens = i;
-	data->token = NULL;
+	data->envp = env;
 	data->nb_pipes = count_pipes(data);
-	data->pipe_fd = NULL;
 	if (data->nb_pipes)
 	{
 		data->pipe_fd = safe_malloc(sizeof(int *) * data->nb_pipes);

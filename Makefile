@@ -18,6 +18,7 @@ SRC := \
 	main.c \
 	parse.c \
 	path.c \
+	redirection.c \
 	signals.c \
 	utils.c \
 

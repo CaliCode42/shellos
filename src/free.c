@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:31:56 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:40:15 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:39:35 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	free_minishell(t_data *data)
 		return ;
 	free_list(&data->token);
 	free_pids(data);
-	//if (data->tokens)
-	//	free_array(data->tokens, data->nb_tokens);
 	rl_clear_history();
 }
 

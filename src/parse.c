@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:26:29 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:44:23 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 16:15:45 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	token_to_array(t_token *token, t_data *data, int n)
 			}
 			current = current->next;
 		}
-		printf("(%d)current->str = %s\n", current->pos, current->str);
 		data->cmds[i] = ft_strdup(current->str);
 		if (!data->cmds[i])
 		{
@@ -43,12 +42,6 @@ void	token_to_array(t_token *token, t_data *data, int n)
 		current = current->next;
 	}
 	data->cmds[i] = NULL;
-	i = 0;
-	while (data->cmds[i])
-	{
-		printf("cmds[%d] = %s\n", i, data->cmds[i]);
-		i++;
-	}
 	data->array_alloc = true;
 }
 

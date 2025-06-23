@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/19 19:22:27 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:13:19 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	close_pipes(int **pipes, int n, t_data *data)
 	}
 }
 
-void	check_type(t_token *token)
+void	check_type(t_token *token, t_data *data)
 {
 	t_token	*current;
 
@@ -38,14 +38,33 @@ void	check_type(t_token *token)
 	{
 		if (current->pos >= 1)
 		{
-			//printf("%d", current->prev->type);
 			if (current->type == CMD
 				&& (current->prev->type == CMD || current->prev->type == ARG))
 			{
 				current = current->prev;
 				add_arg(current);
 			}
+			else if (is_redirection(current->type))
+				redirect_stream(current, data);
 		}
 		current = current->next;
+	}
+}
+
+void	wait_all(t_data *data, int *last_status)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	status = 0;
+	while (i <= data->nb_pipes)
+	{
+		if (data->pids[i] > 0)
+		{
+			waitpid(data->pids[i], &status, 0);
+			*last_status = status;
+		}
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 13:33:14 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/23 21:13:41 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct s_data
 	bool	array_alloc;
 	t_token	*token;
 	char	**envp;
-	char	*file1;
-	char	*file2;
+	int		input;
+	int		output;
 	int		nb_tokens;
 	int		nb_pipes;
 }		t_data;
@@ -90,7 +90,8 @@ void	init_data(t_data *data, char **env);
 
 //utils.c
 void	close_pipes(int **pipes, int n, t_data *data);
-void	check_type(t_token *token);
+void	check_type(t_token *token, t_data *data);
+void	wait_all(t_data *data, int *last_status);
 
 //list.c
 t_token	*new_token(char *str, int i);
@@ -124,6 +125,10 @@ void	child(t_data *data, int i);
 void	parent(t_data *data, int i);
 void	create_child(t_data *data);
 void	fork_process(t_data *data);
+
+//redirection.c
+int		is_redirection(t_tkn_code type);
+void	redirect_stream(t_token *token, t_data *data);
 
 #endif
 /*
