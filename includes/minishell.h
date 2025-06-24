@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 21:13:41 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 16:15:57 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	go_to(char *path);
 //command.c
 int		split_cmd(char *command, char **env, char ***args, char **path);
 int		exec_builtin(t_token *token, t_data *data);
-void	execute_command(char *command, char **env);
+void	execute_command(char *command, char **env, t_token *token, t_data *data);
 
 //signals.c
 void	handle_sigint(int sig);
@@ -121,9 +121,9 @@ void	free_pipes(int **pipes, int n, t_data *data);
 void	free_pids(t_data *data);
 
 //fork.c
-void	child(t_data *data, int i);
+void	child(t_data *data, int i, t_token *token);
 void	parent(t_data *data, int i);
-void	create_child(t_data *data);
+void	create_child(t_data *data, t_token *token);
 void	fork_process(t_data *data);
 
 //redirection.c

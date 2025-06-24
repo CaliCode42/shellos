@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 15:54:20 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 17:38:56 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,19 @@ int	exec_builtin(t_token *token, t_data *data)
 	return (1);
 }
 
-void	execute_command(char *command, char **env)
+void	execute_command(char *command, char **env, t_token *token, t_data *data)
 {
 	char	**args;
 	char	*path;
 
-	ft_printf_fd(STDOUT_FILENO, "command : [%s]\n", command);
-	if (ft_strchr(command, ';') || ft_strchr(command, '&')
+	printf("command : %s\n", command);
+	if (is_builtin(command))
+	{
+		if (exec_builtin(token, data) == 0)
+			exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);
+	}
+	else if (ft_strchr(command, ';') || ft_strchr(command, '&')
 		|| ft_strchr(command, '|') || ft_strchr(command, '*'))
 	{
 		path = exec_bin(command, args);

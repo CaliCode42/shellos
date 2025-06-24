@@ -1,0 +1,13 @@
+command : ls
+Makefile
+Todo
+file
+includes
+libft
+minishell
+obj
+src
+test.sh
+test2.sh
+testfile
+command : grep i

@@ -6,13 +6,13 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 15:41:24 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 16:15:12 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_pipes(t_data *data, int i)
+void	handle_pipes(t_data *data, int i, t_token *token)
 {
 	if (i > 0)
 	{
@@ -25,12 +25,12 @@ void	handle_pipes(t_data *data, int i)
 			dup2(data->pipe_fd[i][1], STDOUT_FILENO);
 	}
 	close_pipes(data->pipe_fd, data->nb_pipes, data);
-	execute_command(data->cmds[i], data->envp);
+	execute_command(data->cmds[i], data->envp, token, data);
 	free_pids(data);
 	exit(EXIT_FAILURE);
 }
 
-void	child(t_data *data, int i)
+void	child(t_data *data, int i, t_token *token)
 {
 	if (data->input != -1)
 	{
@@ -44,12 +44,12 @@ void	child(t_data *data, int i)
 	}
 	if (!data->nb_pipes)
 	{
-		execute_command(data->token->str, data->envp);
+		execute_command(data->token->str, data->envp, token, data);
 		free_pids(data);
 		exit(EXIT_FAILURE);
 	}
 	else
-		handle_pipes(data, i);
+		handle_pipes(data, i, token);
 }
 
 void	parent(t_data *data, int i)
@@ -79,7 +79,7 @@ void	parent(t_data *data, int i)
 	}
 }
 
-void	create_child(t_data *data)
+void	create_child(t_data *data, t_token *token)
 {
 	int	i;
 
@@ -90,7 +90,7 @@ void	create_child(t_data *data)
 	{
 		data->pids[i] = fork();
 		if (data->pids[i] == 0)
-			child(data, i);
+			child(data, i, token);
 		else if (data->pids[i] > 0)
 			parent(data, i);
 		else
@@ -117,19 +117,14 @@ void	fork_process(t_data *data)
 	{
 		if (current->type == CMD)
 		{
-			if (is_builtin(current->str))
-				exec_builtin(current, data);
-			else
+			if (data->nb_pipes)
 			{
-				if (data->nb_pipes)
-				{
-					token_to_array(data->token, data, data->nb_pipes);
-					create_child(data);
-					free_pipes(data->pipe_fd, data->nb_pipes, data);
-					return ;
-				}
-				create_child(data);
+				token_to_array(data->token, data, data->nb_pipes);
+				create_child(data, current);
+				free_pipes(data->pipe_fd, data->nb_pipes, data);
+				return ;
 			}
+			create_child(data, current);
 		}
 		current = current->next;
 	}
