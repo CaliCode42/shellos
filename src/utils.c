@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 21:13:19 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 11:14:58 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@ void	close_pipes(int **pipes, int n, t_data *data)
 	}
 }
 
+void	cmd_to_arg(t_token *current)
+{
+	while (current
+		&& (current->type == CMD || current->type == ARG))
+	{
+		current->type = ARG;
+		if (!current->next)
+			break ;
+		current = current->next;
+	}
+}
+
 void	check_type(t_token *token, t_data *data)
 {
 	t_token	*current;
@@ -38,15 +50,19 @@ void	check_type(t_token *token, t_data *data)
 	{
 		if (current->pos >= 1)
 		{
-			if (current->type == CMD
+			if (!is_builtin(current->prev->str) && current->type == CMD
 				&& (current->prev->type == CMD || current->prev->type == ARG))
 			{
 				current = current->prev;
 				add_arg(current);
 			}
+			else if (is_builtin(current->prev->str))
+				cmd_to_arg(current);
 			else if (is_redirection(current->type))
 				redirect_stream(current, data);
 		}
+		if (!current->next)
+			break ;
 		current = current->next;
 	}
 }
