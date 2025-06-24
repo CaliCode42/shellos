@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 21:36:22 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 15:41:24 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	handle_pipes(t_data *data, int i)
 	if (i > 0)
 	{
 		if (data->input == -1)
-			dup2(data->pipe_fd[i - 1][data->input], STDIN_FILENO);
+			dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
 	}
 	if (i < data->nb_pipes)
 	{

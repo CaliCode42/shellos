@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:39:47 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 21:37:56 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 15:50:51 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_redirection(t_tkn_code type)
 {
-	return (type == IN || type == OUT);
+	return (type == IN || type == OUT || type == APPEND);
 }
 
 static int	redirect_input(char *file)
@@ -43,11 +43,12 @@ static int	redirect_input(char *file)
 	return (fd);
 }
 
-static int	redirect_output(char *file)
+static int	redirect_output(char *file, t_token *token)
 {
 	struct stat	sb;
 	int			fd;
 
+	fd = -1;
 	if (stat(file, &sb) == 0)
 	{
 		if (!S_ISREG(sb.st_mode))
@@ -61,9 +62,12 @@ static int	redirect_output(char *file)
 			return (-1);
 		}
 	}
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (token->type == APPEND)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (token->type == OUT)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		perror("infile: open failed");
+		perror("outfile: open failed");
 	return (fd);
 }
 
@@ -82,9 +86,9 @@ void	redirect_stream(t_token *token, t_data *data)
 			return ;
 		}
 	}
-	else if (token->type == OUT)
+	else if (token->type == OUT || token->type == APPEND)
 	{
-		data->output = redirect_output(token->next->str);
+		data->output = redirect_output(token->next->str, token);
 		if (data->output == -1)
 		{
 			perror("output redirection failed\n");

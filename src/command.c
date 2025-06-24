@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 16:25:41 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 15:54:20 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	execute_command(char *command, char **env)
 	char	**args;
 	char	*path;
 
+	ft_printf_fd(STDOUT_FILENO, "command : [%s]\n", command);
 	if (ft_strchr(command, ';') || ft_strchr(command, '&')
 		|| ft_strchr(command, '|') || ft_strchr(command, '*'))
 	{

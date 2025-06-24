@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 11:14:58 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 16:04:13 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ void	check_type(t_token *token, t_data *data)
 			else if (is_builtin(current->prev->str))
 				cmd_to_arg(current);
 			else if (is_redirection(current->type))
+			{
+				current->next->type = ARG;
 				redirect_stream(current, data);
+			}
 		}
 		if (!current->next)
 			break ;

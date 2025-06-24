@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:41:32 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 11:14:02 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/24 16:05:29 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	builtin_echo(t_token *token)
 		newline = 0;
 		current = current->next;
 	}
-	while (current)
+	while (current && current->type == ARG)
 	{
 		printf("%s", current->str);
 		if (current->next && current->next->str)

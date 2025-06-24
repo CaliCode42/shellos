@@ -1,57 +1,57 @@
 *************************** Mandatory ************************
 
-• Display prompt when waiting for a new command +++DONE+++
+• Display prompt when waiting for a new command			+++DONE+++
 
-• Have a working history +++DONE+++
+• Have a working history					+++DONE+++
 
-• Search and launch the right exec (PATH or relative/absolute) +++DONE+++
-see pipex my friend +++DONE+++
+• Search and launch the right exec (PATH or relative/absolute)	+++DONE+++
+see pipex my friend						+++DONE+++
 
-• Use at most one global variable to indicate a received
+• Use at most one global variable to indicate a received	??????????
 signal
 
-• Not interpret unclosed quotes or special characters which
+• Not interpret unclosed quotes or special characters which	Chloe
 are not required by the subject such as \ or ;
 
-• Handle single quote -> prevent shell from interpreting the
+• Handle single quote -> prevent shell from interpreting the	Chloe
 metacharacters in the quoted sequence.
 
-• Handle double quotes -> prevents shell from interpreting the
+• Handle double quotes -> prevents shell from interpreting the	Chloe
 metacharacters in the quoted sequence except for $.
 
 • Implement the following redirections :
-	◦ < should redirect an input.
-	◦ > should redirect output
-	◦ << should be given a delimiter, then read the input
+	◦ < should redirect an input.				+++DONE+++
+	◦ > should redirect output				+++DONE+++
+	◦ << should be given a delimiter, then read the input	Thomas
 	until a line containing the delimiter is seen.
 	However, it doesn't have to update the history !
-	◦ >> should redirect output in append mode.
+	◦ >> should redirect output in append mode.		Thomas
 
 • Implement pipes. The output of each command in the pipelines
-is connected to the input of the next command via a pipe. +++DONE+++
+is connected to the input of the next command via a pipe.	+++DONE+++
 
-• Handle environment variables ($****) which should expand to
-their values.
+• Handle environment variables ($****) which should expand to	Chloe : parsing
+their values.							Thomas : exec
 
-• Handle $? which should expand to the exit status of the most
+• Handle $? which should expand to the exit status of the most	??????????
 recently executed foreground pipeline.
 
 • Handle ctrl + C, ctrl + D and ctrl + \ which should behave
-like in bash. +++DONE+++
+like in bash.							+++DONE+++
 
-• In interactive mode:
+• In interactive mode:						??????????
 	◦ ctrl-C displays a new prompt on a new line.
 	◦ ctrl-D exits the shell.
 	◦ ctrl-\ does nothing.
 
 • Your shell must implement the following built-in commands:
-	◦ echo with option -n +++DONE+++
-	◦ cd with only a relative or absolute path +++DONE++
-	◦ pwd with no options +++DONE+++
-	◦ export with no options
-	◦ unset with no options
-	◦ env with no options or arguments
-	◦ exit with no options +++DONE+++
+	◦ echo with option -n					+++DONE+++
+	◦ cd with only a relative or absolute path		+++DONE++
+	◦ pwd with no options					+++DONE+++
+	◦ export with no options				Thomas
+	◦ unset with no options					Thomas
+	◦ env with no options or arguments			Thomas
+	◦ exit with no options					+++DONE+++
 
 ************************* Bonus part *************************
 
