@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 16:15:57 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:25:24 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_data
 	int		output;
 	int		nb_tokens;
 	int		nb_pipes;
+	int		last_exit;
 }		t_data;
 
 //parse.c
@@ -91,6 +92,7 @@ void	init_data(t_data *data, char **env);
 //utils.c
 void	close_pipes(int **pipes, int n, t_data *data);
 void	check_type(t_token *token, t_data *data);
+int		check_and_or(t_token *token, t_data *data);
 void	wait_all(t_data *data, int *last_status);
 
 //list.c
@@ -110,7 +112,8 @@ int		builtin_cd(t_token *token, t_data *data);
 char	*ft_str_threejoin(char const *s1, char const *s2, char const *s3);
 
 //debug.c
-void	print_token(t_data *data);
+void	print_current_token(t_token *current);
+void	print_tokens(t_data *data);
 void	reset_colors(void);
 
 //free.c

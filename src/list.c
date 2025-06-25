@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:10:02 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 17:40:00 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/25 16:53:56 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ t_tkn_code	get_token_type(char *str)
 		return (APPEND);
 	if (!ft_strncmp(str, "<<", 3))
 		return (HEREDOC);
+	if (!ft_strncmp(str, "&&", 3))
+		return (AND);
+	if (!ft_strncmp(str, "||", 3))
+		return (OR);
 	return (CMD);
 }
 
@@ -73,7 +77,7 @@ void	create_add_token(t_data *data)
 	free_array(data->tokens, 0);
 	data->array_alloc = false;
 	check_type(data->token, data);
-	print_token(data);
+	// print_tokens(data);
 }
 
 void	add_arg(t_token *current)
@@ -82,14 +86,24 @@ void	add_arg(t_token *current)
 	char	*tmp;
 
 	new_next = NULL;
-	if (!current->next || !current->next->str)
+	if (!current || !current->str || !current->next || !current->next->str)
 		return ;
 	if (current->next->next)
+	{
 		new_next = current->next->next;
+		new_next->prev = current;
+	}
 	tmp = current->str;
 	current->str = ft_str_threejoin(current->str, " ", current->next->str);
 	free(tmp);
 	free(current->next->str);
 	free(current->next);
 	current->next = new_next;
+	// printf("add_arg() :\n\n");
+	// print_current_token(current);
+	// if (!new_next)
+	// 	printf("current->next has been set to null\n");
+	// else
+	// 	print_current_token(current->next);
+	// printf("\n--------------------------------------\n");
 }

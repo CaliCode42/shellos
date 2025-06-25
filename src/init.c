@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:34:28 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/23 21:05:17 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:15:22 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void	init_data(t_data *data, char **env)
 		init_pipes(data->pipe_fd, data->nb_pipes);
 		data->array_alloc = true;
 	}
+	data->last_exit = 1;
 	create_add_token(data);
 }

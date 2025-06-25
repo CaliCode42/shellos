@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/24 16:04:13 by tcali            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:34:40 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	check_type(t_token *token, t_data *data)
 	current = token;
 	while (current)
 	{
+		// print_current_token(current);
+		// if (current->prev)
+		// {
+		// 	printf("\nprevious =");
+		// 	print_current_token(current->prev);
+		// }
+		// else
+		// 	printf("no previous token\n");
 		if (current->pos >= 1)
 		{
 			if (!is_builtin(current->prev->str) && current->type == CMD
@@ -70,6 +78,15 @@ void	check_type(t_token *token, t_data *data)
 	}
 }
 
+int	check_and_or(t_token *token, t_data *data)
+{
+	if (token->prev && token->prev->type == OR && data->last_exit == 0)
+		return (0);
+	else if (token->prev && token->prev->type == AND && data->last_exit != 0)
+		return (0);
+	return (1);
+}
+
 void	wait_all(t_data *data, int *last_status)
 {
 	int	i;
@@ -83,6 +100,11 @@ void	wait_all(t_data *data, int *last_status)
 		{
 			waitpid(data->pids[i], &status, 0);
 			*last_status = status;
+			if (i == data->nb_pipes)
+			{
+				if (WIFEXITED(status))
+					data->last_exit = WEXITSTATUS(status);
+			}
 		}
 		i++;
 	}
