@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:11:39 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 13:21:28 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 19:31:19 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*copy_token(char *line, int start, int i, t_data *data)
 
 	token = safe_malloc(sizeof(char) * (i - start + 2));
 	j = 0;
+	if (i == start)
+		i++;
 	while (start < i)
 	{
 		token[j] = line[start];
@@ -178,12 +180,14 @@ int	parse_unquoted(char	*line, int start, int i, t_data *data)
 		{
 			if (line[i] == '$' && ((line[i + 1] == '\'' && line[i + 2] == '\'') || (line[i + 1] == '"' && line[i + 2] == '"')))
 				return (i + 3);
+			if (line[i] == '$' && line[i + 1] == '?')
+				i += 2;
 			break ;
 		}
 		i++;
 	}
 	token = copy_token(line, start, i, data);
-	// printf("token = [%s]\n", token);
+	printf("token = [%s]\n", token);
 	if (token)
 	{
 		if (syntax_error(token))
