@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/19 16:26:07 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:45:49 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ int	check_type(t_token *token, t_data *data)
 		{
 			while (current->join_next == true && current->next)
 			{
-				current = add_arg(current);
+				current = add_arg(current, data);
 				// current = current->next;
 				print_current_token(current);
 			}
 			if (!is_builtin(current->prev->str) && current->type == CMD
 				&& (current->prev->type == CMD || current->prev->type == ARG))
 			{
-				current = add_arg(current->prev);
+				current = add_arg(current->prev, data);
 			}
 			else if (is_builtin(current->prev->str) && current->type == CMD)
 				cmd_to_arg(current, data);

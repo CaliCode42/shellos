@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 10:28:39 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:45:37 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void	check_sigint_sigquit(int status, t_data *data);
 t_token	*new_token(char *str);
 void	token_add_back(t_token **lst, t_token *new);
 int		create_add_token(t_data *data);
-t_token	*add_arg(t_token *current);
+t_token	*add_arg(t_token *current, t_data *data);
 
 //* ****************************** PARSING
 

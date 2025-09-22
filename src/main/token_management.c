@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:10:02 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/18 16:27:25 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:46:35 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,11 @@ int	create_add_token(t_data *data)
 
 // joins a CMD and an ARG into one single CMD token.
 // updates token->position.
-t_token	*add_arg(t_token *current)
+t_token	*add_arg(t_token *current, t_data *data)
 {
 	t_token	*new_next;
 	char	*tmp;
+	char	*arg;
 
 	new_next = NULL;
 	if (!current || !current->str || !current->next || !current->next->str)
@@ -121,11 +122,23 @@ t_token	*add_arg(t_token *current)
 		update_position(new_next);
 	}
 	tmp = ft_strdup(current->str);
+	if (current->next->to_expand == true)
+		arg = expand_quotes(current->next->str, data, current->next);
+	else
+		arg = current->next->str;
+	if (!arg)
+	{
+		ft_free((void **)&tmp);
+		ft_free((void **)&current->next->str);
+		ft_free((void **)&current->next);
+		current->next = new_next;
+		return (current);
+	}
 	ft_free((void **)&current->str);
 	if (current->join_next)
-		current->str = ft_strjoin(tmp, current->next->str);
+		current->str = ft_strjoin(tmp, arg);
 	else
-		current->str = ft_str_threejoin(tmp, " ", current->next->str);
+		current->str = ft_str_threejoin(tmp, " ", arg);
 	if (!current->next->join_next)
 		current->join_next = false;
 	ft_free((void **)&tmp);

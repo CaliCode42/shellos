@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 09:20:46 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:36:24 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void	fork_process(t_data *data)
 			check_heredoc(current, NULL, data);
 		if (current->type == CMD)
 		{
+			print_current_token(current);
 			current = check_process_needed(data, current);
 			if (current == NULL)
 				break ;
