@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:10:02 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 10:46:35 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:35:19 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_tkn_code	get_token_type(char *str)
 				false, true);
 			return (ft_free((void **)&str), (t_tkn_code)-1);
 		}
-		return (ARG);
+		return (CMD);
 	}
 	return (CMD);
 }

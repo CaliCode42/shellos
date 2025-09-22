@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 10:45:37 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:18:33 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ void	safe_print(char *str, bool free, bool newline);
 
 // utils4.c
 int		count_tokens(t_token *token);
+char	*char_to_str(char c);
 
 /* ************************************************************************** */
 //lbft

@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:11:39 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 09:56:27 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:32:38 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,19 +140,35 @@ int	parse_unquoted(char	*line, int start, int i, t_data *data)
 {
 	t_token	*new;
 	char	*token;
+	char	sep;
 
 	token = NULL;
+	sep = '\0';
 	while (line[i] && !ft_isspace(line[i]))
 	{
 		printf("\tline[%d] = \'%c\'\n", i, line[i]);
-		if (line[i] == '|' && line[i + 1] != '|')
+		if (ft_strchr("&|", line[i]))
 		{
-			new = new_token("|");
+			sep = line[i];
+			if (line[i + 1] != sep && line[i - 1] != sep)
+				new = new_token(char_to_str(sep));
+			else if (line[i + 1] == sep && line[i + 2] != sep)
+			{
+				new = new_token(ft_strjoin(char_to_str(sep), char_to_str(sep)));
+				printf("token = %s\n", new->str);
+				i++;
+			}
+			else
+			{
+				ft_putstr_fd("syntax error near unexpected token", 2);
+				data->last_exit = 2;
+				exit (2);
+			}
 			token_add_back(&data->token, new);
 			return (i + 1);
 		}
 		i++;
-		if (line[i] == '$' || line[i] == '|')
+		if (ft_strchr("&|$", line[i]))
 			break ;
 	}
 	token = copy_token(line, start, i, data);

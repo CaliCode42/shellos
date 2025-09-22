@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 10:28:21 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:38:59 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 	if (!path)
 	{
 		ft_printf_fd(2, "%s : command not found\n", command);
+		data->last_exit = 127;
+		free_minishell(data, true);
+		ft_free((void **)&path);
+		free_array(&args);
 		exit (127);
 	}
 	// {
