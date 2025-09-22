@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 09:53:50 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:28:21 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,13 @@ int	exec_builtin(t_token *token, t_data *data)
 	return (1);
 }
 
-void	exec_failed(char **path, char *cmd, t_data *data)
+void	exec_failed(char **path, char ***args, t_data *data)
 {
-	if (ft_strchr(cmd, '/'))
+	if (ft_strchr(*args[0], '/'))
 	{
-		safe_print(ft_strjoin(cmd, " : Is a directory."), true, true);
+		safe_print(ft_strjoin(*args[0], " : Is a directory."), true, true);
 		ft_free((void **)&path);
+		free_array(args);
 		free_minishell(data, true);
 		data->last_exit = 126;
 		g_exit_status = 126;
@@ -77,6 +78,7 @@ void	exec_failed(char **path, char *cmd, t_data *data)
 	}
 	print_error("command not found", OFF, NULL);
 	ft_free((void **)&path);
+	free_array(args);
 	free_minishell(data, true);
 	data->last_exit = 127;
 	g_exit_status = 127;
@@ -86,9 +88,11 @@ void	exec_failed(char **path, char *cmd, t_data *data)
 // Actually the name speaks for itself, this function executes a command LOL
 void	execute_command(char *command, char **env, t_token *token, t_data *data)
 {
-	// char	**args;
+	char	**args;
 	char	*path;
 
+	path = NULL;
+	args = NULL;
 	if (is_builtin(command))
 	{
 		if (exec_builtin(token, data) == 0)
@@ -101,6 +105,9 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 		exit(127);
 	}
 	path = get_cmd_path(command, env);
+	args = safe_malloc(sizeof(char *) * 2);
+	args[0] = ft_strdup(command);
+	args[1] = NULL;
 	if (!path)
 	{
 		ft_printf_fd(2, "%s : command not found\n", command);
@@ -117,6 +124,6 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 	// }
 	printf("comand = %s\n", command);
 	printf("path = %s\n", path);
-	if (execve(path, &command, env) == -1)
-		exec_failed(&path, command, data);
+	if (execve(path, &args[0], env) == -1)
+		exec_failed(&path, &args, data);
 }

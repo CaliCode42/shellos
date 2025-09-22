@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 09:32:31 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 10:28:39 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ bool	is_append(t_env *new, int len_variable);
 //exec.c (cmd_management/)
 int		split_cmd(char *command, char **env, char ***args, char **path);
 int		exec_builtin(t_token *token, t_data *data);
-void	exec_failed(char **path, char *cmd, t_data *data);
+void	exec_failed(char **path, char ***args, t_data *data);
 void	execute_command(char *command, char **env,
 			t_token *token, t_data *data);
 
