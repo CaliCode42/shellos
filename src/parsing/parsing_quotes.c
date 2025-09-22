@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:11:39 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 12:13:59 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 13:21:28 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,14 +169,18 @@ int	parse_unquoted(char	*line, int start, int i, t_data *data)
 			{
 				ft_putstr_fd("syntax error near unexpected token", 2);
 				data->last_exit = 2;
-				exit (2);
+				return (-1);
 			}
 			token_add_back(&data->token, new);
 			return (i + 1);
 		}
-		i++;
 		if (ft_strchr("&|$\'\"", line[i]))
+		{
+			if (line[i] == '$' && ((line[i + 1] == '\'' && line[i + 2] == '\'') || (line[i + 1] == '"' && line[i + 2] == '"')))
+				return (i + 3);
 			break ;
+		}
+		i++;
 	}
 	token = copy_token(line, start, i, data);
 	// printf("token = [%s]\n", token);
@@ -230,6 +234,7 @@ int	check_quotes(t_data *data, t_input *input, int start, char quote)
 			return (ft_free((void **)&token), i + 1);
 		// printf("token = [%s]\n", token);
 		new = new_token(token);
+		new->to_split = false;
 		while (ft_strchr(token, '$'))
 		{
 			if (data->expand == false)

@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:18:33 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 12:18:12 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 	int				output;
 	bool			to_expand;
 	bool			join_next;
+	bool			to_split;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;

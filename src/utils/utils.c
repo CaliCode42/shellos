@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:35:34 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 10:45:49 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 12:31:12 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ int	check_type(t_token *token, t_data *data)
 	current = token;
 	while (current)
 	{
-		if (!current->next && (current->type == AND || current->type == OR))
+		if (!current->next && (current->type == AND || current->type == OR || current->type == PIPE))
 		{
 			print_error("syntax error near unexpected token `newline'", OFF, NULL);
+			return (0);
 		}
 		if (current->pos == 0 && current->type != CMD)
 		{
@@ -67,6 +68,11 @@ int	check_type(t_token *token, t_data *data)
 		}
 		if (current->pos >= 1)
 		{
+			// if (current->type != CMD && current->type != ARG && current->prev->type != CMD && current->prev->type != ARG)
+			// {
+			// 	syntax_error(current->str);
+			// 	return (0);
+			// }
 			while (current->join_next == true && current->next)
 			{
 				current = add_arg(current, data);

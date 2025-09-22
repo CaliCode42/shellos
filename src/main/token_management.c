@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:10:02 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:35:19 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 12:18:31 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_token	*new_token(char *str)
 	node->output = -1;
 	node->to_expand = false;
 	node->join_next = false;
+	node->to_split = true;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);

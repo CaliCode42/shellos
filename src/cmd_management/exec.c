@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:51:37 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 12:17:51 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,28 +104,32 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 		free_minishell(data, true);
 		exit(127);
 	}
-	path = get_cmd_path(command, env);
-	args = safe_malloc(sizeof(char *) * 2);
-	args[0] = ft_strdup(command);
-	args[1] = NULL;
-	if (!path)
+	if (!token->to_split)
 	{
-		ft_printf_fd(2, "%s : command not found\n", command);
-		data->last_exit = 127;
-		free_minishell(data, true);
-		ft_free((void **)&path);
-		free_array(&args);
-		exit (127);
+		path = get_cmd_path(command, env);
+		args = safe_malloc(sizeof(char *) * 2);
+		args[0] = ft_strdup(command);
+		args[1] = NULL;
+		if (!path)
+		{
+			ft_printf_fd(2, "%s : command not found\n", command);
+			data->last_exit = 127;
+			free_minishell(data, true);
+			ft_free((void **)&path);
+			free_array(&args);
+			exit (127);
+		}
 	}
-	// {
-	// 	if (split_cmd(command, env, &args, &path) == -1)
-	// 	{
-	// 		data->last_exit = 127;
-	// 		free_minishell(data, true);
-	// 		// printf("data->last_exit = %d\n", data->last_exit);
-	// 		exit(data->last_exit);
-	// 	}
-	// }
+	else
+	{
+		if (split_cmd(command, env, &args, &path) == -1)
+		{
+			data->last_exit = 127;
+			free_minishell(data, true);
+			// printf("data->last_exit = %d\n", data->last_exit);
+			exit(data->last_exit);
+		}
+	}
 	// printf("comand = %s\n", command);
 	// printf("path = %s\n", path);
 	if (execve(path, &args[0], env) == -1)
