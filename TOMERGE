@@ -1,0 +1,52 @@
+* Add quotes parsing inside current parsing (before tokenizer)
+
+									+++++++++DONE+++++++++
+
+  --> actually added my parsing function, since it was easier to match with existing code.
+
+* Finish fixing leaks (unvalid cmd)
+
+									+++++++++DONE+++++++++
+
+
+* add expand chdoe
+
+									+++++++++DONE+++++++++
+
+* syntax error redirection
+
+* status code $?
+
+All redirections failure must return exit code (2).
+
+It's ok for unknown chars to be interpreted as command not found, bash posix does it to.
+For example when tou type 'è' or '_' (not alnum chars) posix respond 'cmd not found'.
+Since we don't have to handle special chars, it's legit to admit every unknow char
+will result as "cmd not found". The syntax error exit should only occur when a useful char is used
+(for exemple if you try a redirection char but use an incorrect syntax) and therefore
+a precise syntax is expected, but not when a random char is used.
+
+Test 54 ('.') not handledas posix. exit 127(minishell), vs exit 2(bash).
+
+Test57 ABC=hola not handled as posix. exit 127(minishell), vs exit 0(bash).
+
+Test81 : echo -nnnn not handled as bash. bash reads it as a '-n' option, minishell reads it as an arg. I think its ok though.
+
+* check if everything behave correctly
+* do testing evaluations by other stud
+
+
+
+echo $HOME% returns "/home/tcali %" instead of "/home/tcali%"
+same for echo $HOME$USEReco 
+
+echo $"HO""ME" returns the value of HOME instead of 'HOME'. Not sure if that's a real problem, why would someone use the $ sign if they don't want to access the value? That's not logic.
+
+OK up to test 185
+
+test 186 to 188 almost ok, just one difference with exit_code.
+
+
+parsing : if inbetween quotes --> one token (ex : "ls | grep h" --> don't split in two tokens)
+if inbetween double quotes, don't remove the simple quotes inside and vice versa.
+if pipe between two comands, no space needed to sep them.

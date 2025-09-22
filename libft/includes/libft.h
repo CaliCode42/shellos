@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 22:02:06 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/06 15:58:25 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/02 18:10:50 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
-// Part 1 - Libfc Functions
+// Part 1 - Libft Functions
 int		ft_atoi(const char *nptr);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc( size_t elementCount, size_t elementSize );
@@ -59,6 +59,7 @@ int		ft_toupper(int c);
 char	*ft_strsep(char **str_ptr, const char *sep);
 size_t	ft_strcspn(const char *str, const char *sep);
 int		ft_sprintf(char *str, const char *format, ...);
+
 /* ************************************************************************** */
 //Part 2 - Additional Functions
 char	*ft_itoa(int n);
@@ -74,6 +75,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_isspace(char c);
 char	*ft_strndup(const char *src, size_t len);
+
 /* ************************************************************************** */
 //Bonus Part
 t_list	*ft_lstnew(t_content content);
@@ -91,6 +93,7 @@ t_list	*ft_lstmap(t_list *lst, t_content (*f)(t_content),
 void	*safe_malloc(size_t bytes);
 
 //Utils
+void	ft_free(void **ptr);
 void	error_exit(const char *error);
 
 #endif

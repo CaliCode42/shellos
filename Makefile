@@ -8,28 +8,44 @@ INCLUDE_DIR = includes
 
 # Sources
 SRC := \
-	builtins.c \
-	command.c \
-	debug.c \
-	fork.c \
-	free.c \
-	init.c \
-	list.c \
-	main.c \
-	parse.c \
-	path.c \
-	redirection.c \
-	signals.c \
-	utils.c \
+	builtins/builtins.c \
+	builtins/builtin_cd.c \
+	builtins/env.c \
+	builtins/update_env.c \
+	builtins/export.c \
+	builtins/unset.c \
+	cmd_management/exec.c \
+	cmd_management/fork.c \
+	cmd_management/path.c \
+	debug/debug.c \
+	main/init.c \
+	main/main.c \
+	main/signals.c \
+	main/token_management.c \
+	parsing/expand.c \
+	parsing/parse_pipe.c \
+	parsing/parse.c \
+	parsing/parsing_errors.c \
+	parsing/parsing_quotes.c \
+	parsing/redirect.c \
+	redirection/heredoc.c \
+	redirection/pipes.c \
+	redirection/redirection.c \
+	utils/free.c \
+	utils/free2.c \
+	utils/utils.c \
+	utils/utils2.c \
+	utils/utils3.c \
+	utils/utils4.c \
 
 #Path to sources
 VPATH = $(SRC_DIR) 
 
 # Objects
-OBJ_FILES := $(addprefix $(OBJ_DIR)/$(SRC_DIR)/, $(SRC:.c=.o)) \
+OBJ_FILES := $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC)) \
 
 # Compilation
-CC := gcc
+CC := cc
 CFLAGS := -Wall -Wextra -Werror -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 
 #Libraries
@@ -62,7 +78,7 @@ fclean: clean
 
 re: fclean all
 
-debug : CFLAGS += -g3 -D PROMPT="\"\\033[1;36mdebugshell \$ \033[1;34m\""
+debug : CFLAGS += -g3 -D PROMPT="\"\\001\033[1;36m\002debugshell \$ \001\033[1;34m\002\""
 debug : re
 
 .PHONY: all clean fclean re debug

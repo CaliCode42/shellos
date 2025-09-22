@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chdoe <chdoe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 20:43:06 by tcali             #+#    #+#             */
-/*   Updated: 2025/08/26 10:21:02 by chdoe            ###   ########.fr       */
+/*   Created: 2025/09/02 18:08:31 by tcali             #+#    #+#             */
+/*   Updated: 2025/09/02 18:10:56 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_free(void **ptr)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
+	if (ptr && *ptr)
 	{
-		ft_putchar_fd(fd, s[i]);
-		i++;
+		free(*ptr);
+		*ptr = NULL;
 	}
+	return ;
 }

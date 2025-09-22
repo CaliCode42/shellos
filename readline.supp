@@ -1,0 +1,35 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    readline.supp                                      :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tcali <tcali@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/08/15 17:12:33 by tcali             #+#    #+#              #
+#    Updated: 2025/08/15 18:03:27 by tcali            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+{
+   readline_still_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libreadline.so*
+}
+
+{
+   readline_possibly_lost
+   Memcheck:Leak
+   match-leak-kinds: possible
+   ...
+   obj:*/libreadline.so*
+}
+
+{
+   ignore_libhistory_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*/libhistory.so*
+}

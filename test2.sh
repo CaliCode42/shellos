@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ========= CONFIG =========
-MINISHELL=./minishell
+MINISHELL="$(cd "$(dirname "$0")" && pwd)/minishell"
 BASH=/bin/bash
 
 # ========= COLORS =========
@@ -17,7 +17,7 @@ run_test() {
 
 	echo -e "${YELLOW}Test: $cmd${RESET}"
 
-	# Pipe la commande dans minishell
+	# Pipe the command in minishell
 	minishell_output=$(echo "$cmd" | $MINISHELL 2>&1 | sed '/^debugshell/d')
 	bash_output=$(echo "$cmd" | $BASH 2>&1)
 
@@ -63,6 +63,50 @@ run_test "cat testfile | grep test2" "test2"
 run_test "echo abc | tr a-z A-Z" "ABC"
 run_test "echo abc | rev" "cba"
 run_test "echo line1 > testfile && cat < testfile | cat | cat" "line1"
+
+###############################
+#         TEST EXPORT         #
+###############################
+
+# Simple export (new variable)
+run_test "export VAR1=hello && echo \$VAR1" "hello"
+
+# Export of an empty variable
+run_test "export VAR2= && echo \$VAR2" ""
+
+# Export of a variable without value (only the name)
+run_test "export VAR3 && env | grep VAR3" "VAR3"
+
+# Update an existing variable
+run_test "export VAR1=world && echo \$VAR1" "world"
+
+# Export with += (concatenation) if implemented
+run_test "export VAR1+=_42 && echo \$VAR1" "world_42"
+
+# Export multiple variables in one command
+run_test "export VAR4=foo VAR5=bar && export | grep VAR" "VAR4=foo
+VAR5=bar"
+
+# Display the sorted environment (simulate 'export' without arguments)
+run_test "export | grep VAR1" "VAR1"
+
+# Variable with an invalid name (starts with a digit)
+run_test "export 1INVALID=value" "not a valid identifier"
+
+# Variable with a forbidden character
+run_test "export INV-ALID=value" "not a valid identifier"
+
+# Export without arguments (should not crash, must display the list)
+run_test "export" "same"
+
+# Export of a variable containing '=' in its value
+run_test "export VAR6=foo=bar && echo \$VAR6" "foo=bar"
+
+# Redefine a variable multiple times
+run_test "export VAR7=init && export VAR7=updated && echo \$VAR7" "updated"
+
+# Cleanup after export tests
+unset VAR1 VAR2 VAR3 VAR4 VAR5 VAR6 VAR7
 
 # ========= END =========
 echo -e "${GREEN}Tous les tests ont été lancés.${RESET}"

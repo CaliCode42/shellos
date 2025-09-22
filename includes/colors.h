@@ -6,14 +6,15 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:27:46 by tcali             #+#    #+#             */
-/*   Updated: 2025/06/16 16:51:02 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/09 14:18:05 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORS_H
 # define COLORS_H
 # ifndef PROMPT
-#  define PROMPT "\033[1;35mminishell$ \033[0;33m"
+// #  define PROMPT "\001\033[1;35m\002minishell$ \001\033[0;33m\002"
+#  define PROMPT "minishell$ "
 # endif
 # ifndef C_MAGENTA
 #  define C_MAGENTA "\033[0;35m"

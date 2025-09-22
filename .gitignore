@@ -1,3 +1,5 @@
 minishell
 obj/
+libft/objects/
+*.o
 .vscode/

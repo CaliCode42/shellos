@@ -69,6 +69,7 @@ SAFE := \
 	alloc.c \
 
 UTILS := \
+	ft_free.c \
 	error_exit.c \
 
 # Sources ft_printf
@@ -88,7 +89,6 @@ PRINTF_FILES := \
 	ft_strcpy.c \
 	ft_strlen_int.c \
 	print_type.c \
-	ft_free.c \
 	ft_pickstr.c \
 
 GNL_FILES := \

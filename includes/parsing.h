@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chdoe <chdoe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 20:43:06 by tcali             #+#    #+#             */
-/*   Updated: 2025/08/26 10:21:02 by chdoe            ###   ########.fr       */
+/*   Created: 2025/09/12 14:42:54 by tcali             #+#    #+#             */
+/*   Updated: 2025/09/12 14:51:51 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#ifndef PARSING_H
+# define PARSING_H
+# include <errno.h>
+# include "minishell.h"
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		ft_putchar_fd(fd, s[i]);
-		i++;
-	}
-}
+char	**split_quotes(char *line, char set);
+#endif

@@ -1,0 +1,131 @@
+```
+/*****************Fonctions Readline*****************/
+
+* readline
+* 	Lit une ligne de texte depuis l'entrée standard avec complétion et historique.
+* rl_clear_history
+* 	Vide l’historique des commandes stocké par Readline.
+* rl_on_new_line
+* 	Indique à Readline que l'utilisateur est sur une nouvelle ligne.
+* rl_replace_line
+* 	Remplace le contenu courant de la ligne de Readline.
+* rl_redisplay
+* 	Rafraîchit l'affichage de la ligne d'entrée.
+* add_history
+* 	Ajoute une ligne au tampon d’historique Readline.
+
+/*****************Affichage et mémoire*****************/
+
+* printf								
+* 	Affiche une chaîne formatée sur la sortie standard.
+* malloc								
+* 	Alloue dynamiquement un bloc de mémoire.
+* free									
+* 	Libère une mémoire précédemment allouée par malloc.
+* write									
+* 	Écrit des données sur un descripteur de fichier.
+
+/*****************Fichiers et accès*****************/
+
+* access								
+* 	Vérifie les permissions d'accès à un fichier.
+* open									
+* 	Ouvre un fichier et retourne un descripteur de fichier.
+* read									
+* 	Lit des données depuis un fichier ou une entrée.
+* close									
+* 	Ferme un descripteur de fichier.
+* unlink								
+* 	Supprime un fichier (efface un lien).
+
+/*****************Processus et exécution*****************/
+
+* fork									
+* 	Crée un nouveau processus (copie du processus courant).
+* wait, waitpid, wait3, wait4			
+* 	Attend la fin d'un processus enfant (diffèrent en options
+* 	de précision ou de ressources récupérées).
+* execve								
+* 	Remplace le processus courant par un nouveau programme.
+* exit									
+* 	Termine le processus courant.
+
+/*****************Signaux*****************/
+
+* signal
+* 	Définit un gestionnaire pour un signal spécifique.
+* sigaction
+* 	Plus puissant que signal, permet une gestion fine des signaux.
+* sigemptyset
+* 	Initialise un ensemble de signaux vide.
+* sigaddset
+* 	Ajoute un signal à un ensemble.
+* kill
+* 	Envoie un signal à un processus.
+
+/*****************Répertoire de travail*****************/
+
+* getcwd
+* 	Retourne le chemin du répertoire de travail courant.
+* chdir									
+* 	Change le répertoire de travail courant.
+
+/*****************Statistiques sur fichiers*****************/
+
+* stat, lstat, fstat
+* 	Récupèrent des informations sur un fichier (taille, permissions, etc.) :
+* 	stat par nom, lstat ne suit pas les liens symboliques, fstat sur descripteur.
+
+/*****************Duplication & pipes*****************/
+
+* dup									
+* 	Duplique un descripteur de fichier.
+* dup2									
+* 	Duplique un descripteur vers un numéro donné.
+* pipe									
+* 	Crée un canal de communication entre deux processus.
+
+/*****************Répertoires*****************/
+
+* opendir								
+* 	Ouvre un répertoire pour lecture.
+* readdir								
+* 	Lit une entrée (fichier/dossier) dans un répertoire ouvert.
+* closedir								
+* 	Ferme un répertoire ouvert avec opendir.
+
+/*****************Utilitaires systèmes*****************/
+
+* strerror								
+* 	Retourne un message d'erreur lisible pour un code d'erreur.
+* perror								
+* 	Affiche un message d'erreur lié à errno.
+* isatty
+* 	Vérifie si un descripteur est un terminal.
+* ttyname								
+* 	Retourne le nom du terminal associé à un descripteur.
+* ttyslot								
+* 	Retourne l'index du terminal dans /etc/ttys.
+* ioctl
+* 	Permet le contrôle bas niveau sur les périphériques.
+
+/*****************Variables d’environnement*****************/
+
+* getenv								
+* 	Récupère la valeur d'une variable d’environnement.
+
+/*****************Contrôle du terminal*****************/
+
+* tcsetattr
+* 	Définit les attributs du terminal (ex: mode raw).
+* tcgetattr
+* 	Récupère les attributs actuels du terminal.
+* tgetent
+* 	Charge les infos sur un terminal donné (Termcap).
+* tgetflag, tgetnum, tgetstr
+* 	Récupèrent des capacités du terminal (booléenne, numérique, chaîne).
+* tgoto
+* 	Formate une chaîne de positionnement de curseur.
+* tputs
+* 	Affiche une chaîne de contrôle du terminal.
+```

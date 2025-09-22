@@ -22,16 +22,16 @@ metacharacters in the quoted sequence except for $.
 • Implement the following redirections :
 	◦ < should redirect an input.				+++DONE+++
 	◦ > should redirect output				+++DONE+++
-	◦ << should be given a delimiter, then read the input	Thomas
+	◦ << should be given a delimiter, then read the input	+++DONE+++
 	until a line containing the delimiter is seen.
 	However, it doesn't have to update the history !
-	◦ >> should redirect output in append mode.		Thomas
+	◦ >> should redirect output in append mode.		+++DONE+++
 
 • Implement pipes. The output of each command in the pipelines
 is connected to the input of the next command via a pipe.	+++DONE+++
 
 • Handle environment variables ($****) which should expand to	Chloe : parsing
-their values.							Thomas : exec
+their value
 
 • Handle $? which should expand to the exit status of the most	??????????
 recently executed foreground pipeline.
@@ -39,7 +39,7 @@ recently executed foreground pipeline.
 • Handle ctrl + C, ctrl + D and ctrl + \ which should behave
 like in bash.							+++DONE+++
 
-• In interactive mode:						??????????
+• In interactive mode:						+++DONE+++
 	◦ ctrl-C displays a new prompt on a new line.
 	◦ ctrl-D exits the shell.
 	◦ ctrl-\ does nothing.
@@ -48,14 +48,14 @@ like in bash.							+++DONE+++
 	◦ echo with option -n					+++DONE+++
 	◦ cd with only a relative or absolute path		+++DONE++
 	◦ pwd with no options					+++DONE+++
-	◦ export with no options				Thomas
-	◦ unset with no options					Thomas
-	◦ env with no options or arguments			Thomas
+	◦ export with no options				+++DONE+++
+	◦ unset with no options					+++DONE+++
+	◦ env with no options or arguments			+++DONE+++
 	◦ exit with no options					+++DONE+++
 
 ************************* Bonus part *************************
 
 Your program must implement:
 
-• && and || with parenthesis for priorities.
+• && and || with parenthesis for priorities.			---only missing parenthesis implementation---
 • Wildcards * should work for the current working directory
