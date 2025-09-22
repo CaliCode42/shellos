@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:11:39 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:32:38 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 12:13:59 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,16 +146,23 @@ int	parse_unquoted(char	*line, int start, int i, t_data *data)
 	sep = '\0';
 	while (line[i] && !ft_isspace(line[i]))
 	{
-		printf("\tline[%d] = \'%c\'\n", i, line[i]);
+		// printf("\tline[%d] = \'%c\'\n", i, line[i]);
 		if (ft_strchr("&|", line[i]))
 		{
+			if (i == 0)
+			{
+				print_error("syntax error near unexpected token", OFF, NULL);
+				data->last_exit = 2;
+				free_minishell(data, false);
+				return (-1);
+			}
 			sep = line[i];
 			if (line[i + 1] != sep && line[i - 1] != sep)
 				new = new_token(char_to_str(sep));
 			else if (line[i + 1] == sep && line[i + 2] != sep)
 			{
 				new = new_token(ft_strjoin(char_to_str(sep), char_to_str(sep)));
-				printf("token = %s\n", new->str);
+				// printf("token = %s\n", new->str);
 				i++;
 			}
 			else
@@ -168,15 +175,16 @@ int	parse_unquoted(char	*line, int start, int i, t_data *data)
 			return (i + 1);
 		}
 		i++;
-		if (ft_strchr("&|$", line[i]))
+		if (ft_strchr("&|$\'\"", line[i]))
 			break ;
 	}
 	token = copy_token(line, start, i, data);
-	printf("token = [%s]\n", token);
+	// printf("token = [%s]\n", token);
 	if (token)
 	{
 		if (syntax_error(token))
 		{
+			ft_free((void **)&token);
 			data->last_exit = 2;
 			return (-1);
 		}
@@ -279,6 +287,12 @@ int	parse_line(t_data *data, t_input *input)
 	}
 	if (!ft_strncmp(input->line, "", 1))
 		return (-1);
+	if (!ft_strncmp(input->line, "\'\'", 3) || !ft_strncmp(input->line, "\"\"", 3))
+	{
+		print_error("command not found", OFF, NULL);
+		data->last_exit = 127;
+		return (-1);
+	}
 	if (!ft_strncmp(input->line, ":", 1))
 	{
 		data->last_exit = 0;
@@ -286,7 +300,7 @@ int	parse_line(t_data *data, t_input *input)
 	}
 	while (input->line && input->line[i])
 	{
-		printf("line[%d] = \'%c\'\n", i, input->line[i]);
+		// printf("line[%d] = \'%c\'\n", i, input->line[i]);
 		data->expand = true;
 		while (input->line[i] && ft_isspace(input->line[i]))
 			i++;

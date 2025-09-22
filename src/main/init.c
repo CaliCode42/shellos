@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:34:28 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/19 17:22:45 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:41:30 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	init_data(t_data *data)
 	data->heredoc = ".heredoc_tmp";
 	data->nb_cmds = count_cmds(data->token);
 	data->nb_tokens = count_tokens(data->token);
-	print_tokens(data);
+	// print_tokens(data);
 	if (check_type(data->token, data) == 0)
 		return (0);
 	data->nb_pipes = count_pipes(data, data->token, false);

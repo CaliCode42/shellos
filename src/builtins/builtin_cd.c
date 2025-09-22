@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:08:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/18 14:14:16 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:57:36 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int	builtin_cd(t_token *token, t_data *data)
 		else
 			path = token->next->str;
 	}
-	if (!is_valid_dir(path))
+	if (is_valid_dir(path) != 1)
 	{
 		data->last_exit = 1;
 		return (data->last_exit);

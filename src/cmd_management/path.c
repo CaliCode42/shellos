@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:22:04 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/09 12:59:25 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:56:17 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	is_valid_program(char *program)
 	}
 	if (S_ISDIR(sb.st_mode))
 	{
-		ft_printf_fd(STDERR_FILENO, "cd: %s: Is a directory\n", program);
-		return (0);
+		return (126);
 	}
 	if (access(program, X_OK) != 0)
 	{

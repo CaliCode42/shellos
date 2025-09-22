@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:38:59 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 11:51:37 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	exec_failed(char **path, char ***args, t_data *data)
 	if (ft_strchr(*args[0], '/'))
 	{
 		safe_print(ft_strjoin(*args[0], " : Is a directory."), true, true);
-		ft_free((void **)&path);
+		ft_free((void **)path);
 		free_array(args);
 		free_minishell(data, true);
 		data->last_exit = 126;
@@ -126,8 +126,8 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 	// 		exit(data->last_exit);
 	// 	}
 	// }
-	printf("comand = %s\n", command);
-	printf("path = %s\n", path);
+	// printf("comand = %s\n", command);
+	// printf("path = %s\n", path);
 	if (execve(path, &args[0], env) == -1)
 		exec_failed(&path, &args, data);
 }
