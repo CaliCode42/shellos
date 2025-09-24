@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 12:10:17 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/18 14:12:05 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/15 16:58:02 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ void	update_position(t_token *token)
 	current = token;
 	while (current)
 	{
-		if (!current->prev)
-			current->pos = 0;
-		else
-			current->pos = current->prev->pos + 1;
+		current->pos -= 1;
 		current = current->next;
 	}
 }

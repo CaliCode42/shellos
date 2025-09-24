@@ -6,14 +6,13 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:29:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/19 16:53:55 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/25 01:08:20 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_exit_status = 0;
-
 // // get_line modified for tester (don't print the prompt)
 // void	get_line(t_data *data, char **envp, char *line)
 // {
@@ -50,11 +49,48 @@ int g_exit_status = 0;
 // function which calls readline() and parse its result. Also initializing
 // data before proceeding to execution of the cmds. 
 // free what needs to be after each iteration and free all at the end.
+// void	get_line(t_data *data, char **envp, t_input *input)
+// {
+// 	while (1)
+// 	{
+// 		// printf("data->last_exit = %d\n", data->last_exit);
+// 		input->line = readline(PROMPT);
+// 		if (!input->line)
+// 		{
+// 			safe_print("exit", false, true);
+// 			free_minishell(data, true);
+// 			break ;
+// 		}
+// 		if (*(input)->line)
+// 			add_history(input->line);
+// 		if (data->env_set == false)
+// 			init_env(data, envp);
+// 		else if (data->env_set && !data->envp)
+// 			export_to_env(data);
+// 		// data->tokens = parse_line(line);
+// 		if (parse_line(data, input) != -1)
+// 		{
+// 			if (init_data(data) == 1)
+// 				fork_process(data);
+// 		}
+// 		// if (!data->tokens)
+// 		// {
+// 		// 	safe_print("Error parsing line", false, true);
+// 		// 	break ;
+// 		// }
+// 		free_minishell(data, false);
+// 		ft_free((void **)&input->line);
+// 	}
+// }
+
+
+// main to test the new parsing
 void	get_line(t_data *data, char **envp, t_input *input)
 {
+	(void)envp;
 	while (1)
 	{
-		// printf("g_exit_status = %d\n", g_exit_status);
+		printf("data->last_exit = %d\n", data->last_exit);
 		input->line = readline(PROMPT);
 		if (!input->line)
 		{
@@ -68,17 +104,14 @@ void	get_line(t_data *data, char **envp, t_input *input)
 			init_env(data, envp);
 		else if (data->env_set && !data->envp)
 			export_to_env(data);
-		// data->tokens = parse_line(line);
-		if (parse_line(data, input) != -1)
+		if (parse_line(data, input) && parse_all_tokens(data))
 		{
-			if (init_data(data) == 1)
+			if (init_data(data))
 				fork_process(data);
 		}
-		// if (!data->tokens)
-		// {
-		// 	safe_print("Error parsing line", false, true);
-		// 	break ;
-		// }
+		// print_tokens(data);
+			// safe_print("error parsing the line, see parse_line", false, true);
+		// else
 		free_minishell(data, false);
 		ft_free((void **)&input->line);
 	}
@@ -91,6 +124,7 @@ void	init_input(t_input *input)
 	input->quote = '"';
 	input->quoted = NULL;
 	input->quotes = false;
+	input->in_token = false;
 	input->remaining = NULL;
 	input->token = NULL;
 }
@@ -109,9 +143,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	// input = safe_malloc(sizeof(t_input));
 	ft_bzero(&data, sizeof(t_data));
+	data.expand = true;
 	// line = NULL;
 	init_input(&input);
-	// signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	get_line(&data, envp, &input);
 	reset_colors();

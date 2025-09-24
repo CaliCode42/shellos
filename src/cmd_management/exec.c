@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:30:52 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 12:17:51 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/16 14:15:38 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,13 @@ void	exec_failed(char **path, char ***args, t_data *data)
 		free_array(args);
 		free_minishell(data, true);
 		data->last_exit = 126;
-		g_exit_status = 126;
 		exit(data->last_exit);
 	}
 	print_error("command not found", OFF, NULL);
-	ft_free((void **)&path);
+	ft_free((void **)path);
 	free_array(args);
 	free_minishell(data, true);
 	data->last_exit = 127;
-	g_exit_status = 127;
 	exit(data->last_exit);
 }
 
@@ -91,8 +89,6 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 	char	**args;
 	char	*path;
 
-	path = NULL;
-	args = NULL;
 	if (is_builtin(command))
 	{
 		if (exec_builtin(token, data) == 0)
@@ -104,34 +100,18 @@ void	execute_command(char *command, char **env, t_token *token, t_data *data)
 		free_minishell(data, true);
 		exit(127);
 	}
-	if (!token->to_split)
-	{
-		path = get_cmd_path(command, env);
-		args = safe_malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(command);
-		args[1] = NULL;
-		if (!path)
-		{
-			ft_printf_fd(2, "%s : command not found\n", command);
-			data->last_exit = 127;
-			free_minishell(data, true);
-			ft_free((void **)&path);
-			free_array(&args);
-			exit (127);
-		}
-	}
 	else
 	{
 		if (split_cmd(command, env, &args, &path) == -1)
 		{
 			data->last_exit = 127;
 			free_minishell(data, true);
-			// printf("data->last_exit = %d\n", data->last_exit);
+			printf("data->last_exit = %d\n", data->last_exit);
 			exit(data->last_exit);
 		}
 	}
-	// printf("comand = %s\n", command);
-	// printf("path = %s\n", path);
-	if (execve(path, &args[0], env) == -1)
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	if (execve(path, args, env) == -1)
 		exec_failed(&path, &args, data);
 }

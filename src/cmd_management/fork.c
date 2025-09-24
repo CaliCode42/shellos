@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:35:11 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:47:22 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/25 01:09:51 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 void	child(t_data *data, int i, t_token *token)
 {
 	(void)i;
-
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (token->input != -1)
@@ -66,7 +65,6 @@ void	parent(t_data *data)
 		if (WIFEXITED(status))
 			data->last_exit = WEXITSTATUS(status);
 	}
-	// printf("spgvds\n");
 	free_pipes(data->pipe_fd, data->nb_pipes, data);
 	// free_pids(data);
 	// ft_free((void **)&data->pid);
@@ -134,24 +132,22 @@ static t_token	*check_process_needed(t_data *data, t_token *current)
 void	fork_process(t_data *data)
 {
 	t_token	*current;
-	char	*tmp;
+	// char	*tmp;
 
 	current = data->token;
 	while (current)
 	{
-		if (current->to_expand == true)
-		{
-			tmp = expand_quotes(current->str, data, current);
-			ft_free((void **)&current->str);
-			current->str = tmp;
-			current->to_expand = false;
-		}
+		// if (current->to_expand == true)
+		// {	
+		// 	tmp = expand_quotes(current->str, data, current);
+		// 	ft_free((void **)&current->str);
+		// 	current->str = tmp;
+		// }
 		// print_current_token(current);
 		if (current->pos == 0 && current->type == HEREDOC)
 			check_heredoc(current, NULL, data);
 		if (current->type == CMD)
 		{
-			// print_current_token(current);
 			current = check_process_needed(data, current);
 			if (current == NULL)
 				break ;

@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:39:47 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/17 12:10:11 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/24 20:22:47 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ int	redirect_stream(t_token *token, t_token *cmd, t_data *data)
 {
 	if (!token->next || !token->next->str)
 	{
-		if (syntax_error(token->str) == 2)
-			return (2);
+		print_error("syntax error near unexpected token `newline'", OFF, NULL);
 		return (2);
 	}
 	token->next->type = ARG;

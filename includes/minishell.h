@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 18:30:16 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 12:18:12 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/25 00:55:53 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_input
 	char	*token;
 	char	quote;
 	bool	*quotes;
+	bool	in_token;
 }			t_input;
 
 typedef struct s_token
@@ -70,7 +71,6 @@ typedef struct s_token
 	int				output;
 	bool			to_expand;
 	bool			join_next;
-	bool			to_split;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -194,38 +194,41 @@ void	setup_heredoc_signals(void);
 void	check_sigint_sigquit(int status, t_data *data);
 
 //token_management.c (main/)
-t_token	*new_token(char *str);
+t_token	*new_token(char *str, bool join_next);
 void	token_add_back(t_token **lst, t_token *new);
 int		create_add_token(t_data *data);
 t_token	*add_arg(t_token *current, t_data *data);
 
 //* ****************************** PARSING
 
-//expand.c
-char	*expand_quotes(char *var, t_data *data, t_token *token);
-char	*var_to_value(char *exp, t_token *current);
 
-// parse_pipe.c
-int		check_empty_pipes(char *line);
+// parse2.c
+int		parse_line(t_data *data, t_input *input);
+int		parse_all_tokens(t_data *data);
+
+// //expand.c
+// char	*expand_quotes(char *var, t_data *data, t_token *token);
+
+// // parse_pipe.c
+// int		check_empty_pipes(char *line);
 
 //parse.c (parsing/)
 void	token_to_array(t_token *start, t_data *data);
 // char	**parse_line(const char *line);
 int		parse_line(t_data *data, t_input *input);
 
-// parsing_errors.c
-int		is_bad_redirect(char c);
-int		syntax_and(char *str);
-int		syntax_error(char *str);
+// // parsing_errors.c
+// int		is_bad_redirect(char c);
+// int		syntax_error(t_token *current);
 
-//parsing_quotes.c
-char	*copy_token(char *line, int start, int i, t_data *data);
-int		quote_is_closed(char *line, char quote);
+// //parsing_quotes.c
+// char	*remove_quotes(char *token, char quote);
+// char	*copy_token(t_input *input, int start, int i, t_data *data);
+// int		quote_is_closed(char *line, char quote);
 
-// redirect.c
-int		triple_check(char *line, char c);
-int		redirect_inout(char *line);
-int		append_inout(char *line);
+// // redirect.c
+// int		redirect_inout(char *line);
+// int		append_inout(char *line);
 
 //* ****************************** REDIRECTION
 
@@ -281,6 +284,8 @@ void	safe_print(char *str, bool free, bool newline);
 // utils4.c
 int		count_tokens(t_token *token);
 char	*char_to_str(char c);
+void	print_unexpected_token(char sep, int nb);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 /* ************************************************************************** */
 //lbft

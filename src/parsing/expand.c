@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:31:20 by chdoe             #+#    #+#             */
-/*   Updated: 2025/09/19 17:58:05 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/23 13:29:11 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,40 +218,32 @@ char	*var_to_value(char *exp, t_token *current)
 	return (var);
 }
 
-
 char	*expand_quotes(char *exp, t_data *data, t_token *token)
 {
 	t_env	*current;
 	char	*var;
 
-	// printf("token = [%s]\n", exp);
 	token->type = ARG;
-	if (ft_strchr(exp, '\''))
+	printf("var = %s\n", exp);
+	if (!ft_strncmp(exp, "$", 2))
+		return (ft_strdup(exp));
+	if (!ft_strncmp(exp, "$?", 3))
 	{
-		token->to_expand = false;
-		return (var_to_value(exp, token));
-	}
-	if (exp[1] == '?')
-	{
+		// printf("333  %d\n", data->last_exit);
 		var = ft_itoa(data->last_exit);
-		// printf("new token = [%s]\n", var);
 		return (var);
 	}
 	else if (!ft_strncmp(exp, "~", 2))
 		var = ft_strdup("HOME");
 	else
-	{
 		var = var_to_value(exp, token);
-	}
 	current = data->exported_env;
 	while (current)
 	{
-		if (!ft_strncmp(current->variable, var, ft_strlen(var))
-			&& current->variable[ft_strlen(var)] == '\0')
+		if (!ft_strncmp(current->variable, var, ft_strlen(current->variable)))
 			return (ft_free((void **)&var), ft_strdup(current->value));
 		current = current->next;
 	}
-	// printf("new token = [%s]\n", var);
 	if (!ft_strncmp(exp, "~", 2))
 		return (ft_free((void **)&var), ft_strdup(exp));
 	return (ft_free((void **)&var), NULL);

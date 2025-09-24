@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:41:32 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/19 14:45:03 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/24 20:28:36 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	builtin_echo(t_data *data, t_token *token)
 {
 	int		newline;
 	t_token	*current;
-	char	*tmp;
+	// char	*tmp;
 
 	(void)data;
 	newline = 1;
-	tmp = NULL;
+	// tmp = NULL;
 	current = token->next;
 	if (current && !ft_strncmp(current->str, "-n", 3))
 	{
@@ -40,18 +40,16 @@ int	builtin_echo(t_data *data, t_token *token)
 	}
 	while (current && current->type == ARG)
 	{
-		if (current->to_expand == true)
-		{
-			tmp = expand_quotes(current->str, data, current);
-			ft_free((void **)&current->str);
-			current->str = tmp;
-			current->to_expand = false;
-		}
+		// if (current->to_expand == true)
+		// {
+		// 	tmp = expand_quotes(current->str, data, current);
+		// 	ft_free((void **)&current->str);
+		// 	current->str = tmp;
+		// }
 		if (current->str)
 		{
 			safe_print(current->str, false, false);
-			if (current->next && current->next->type == ARG
-				&& current->next->str)
+			if (current->next && current->next->str)
 				safe_print(" ", false, false);
 		}
 		current = current->next;

@@ -22,12 +22,8 @@ SRC := \
 	main/main.c \
 	main/signals.c \
 	main/token_management.c \
-	parsing/expand.c \
-	parsing/parse_pipe.c \
 	parsing/parse.c \
-	parsing/parsing_errors.c \
-	parsing/parsing_quotes.c \
-	parsing/redirect.c \
+	parsing/parse2.c \
 	redirection/heredoc.c \
 	redirection/pipes.c \
 	redirection/redirection.c \
@@ -37,6 +33,39 @@ SRC := \
 	utils/utils2.c \
 	utils/utils3.c \
 	utils/utils4.c \
+
+# # Sources
+# SRC := \
+# 	builtins/builtins.c \
+# 	builtins/builtin_cd.c \
+# 	builtins/env.c \
+# 	builtins/update_env.c \
+# 	builtins/export.c \
+# 	builtins/unset.c \
+# 	cmd_management/exec.c \
+# 	cmd_management/fork.c \
+# 	cmd_management/path.c \
+# 	debug/debug.c \
+# 	main/init.c \
+# 	main/main.c \
+# 	main/signals.c \
+# 	main/token_management.c \
+# 	parsing/expand.c \
+# 	parsing/parse_pipe.c \
+# 	parsing/parse.c \
+# 	parsing/parsing_errors.c \
+# 	parsing/parsing_quotes.c \
+# 	parsing/redirect.c \
+# 	parsing/parse2.c \
+# 	redirection/heredoc.c \
+# 	redirection/pipes.c \
+# 	redirection/redirection.c \
+# 	utils/free.c \
+# 	utils/free2.c \
+# 	utils/utils.c \
+# 	utils/utils2.c \
+# 	utils/utils3.c \
+# 	utils/utils4.c \
 
 #Path to sources
 VPATH = $(SRC_DIR) 

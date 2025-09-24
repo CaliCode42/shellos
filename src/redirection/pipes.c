@@ -16,7 +16,6 @@
 // then closes all pipes and executing the cmd
 void	pipeline_childs(t_token *current, t_data *data, int i)
 {
-	// printf("pipe_child\n");
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (current->input != -1)

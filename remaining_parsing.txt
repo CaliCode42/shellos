@@ -1,0 +1,25 @@
+Parsing system : 
+
+firstly look for parsing errors.
+
+Spliting line into tokens.
+(A token is delimited by a space, a separator or a newline).
+Sepators are sepcial chars "\'\"&|$<>"
+
+To implement : 
+
+Parsing redirection tokens ("<<, >>"). Now it is only interpreting single ones.
+Parsing quotes to check, having incorrect behavior with this line :
+	{ ""''echo hola""'''' que""'' tal""'' };
++++DONE+++
+
+Need to expand when '$' is present & !single_quotes.
+	how??
+	when $ found and needs to be expanded, create a new token, replacing $... by its exp value.
+	copy what preceed the $ in a str, s join with exp value,
+	then join these two str with what is remaining to parse and continue until EOL.
++++DONE+++
+
+Need to join next token if there was no space in the command line
+(ex: they were separated due to quotes inbetween but need to be joined back after).
++++DONE+++

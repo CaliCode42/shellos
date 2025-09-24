@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 11:31:56 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/19 16:36:36 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/22 23:49:28 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	free_minishell(t_data *data, bool end)
 {
 	if (!data)
 		return ;
-	// g_exit_status = data->last_exit;
 	free_heredoc(data);
 	if (data->cmds)
 		free_array(&data->cmds);

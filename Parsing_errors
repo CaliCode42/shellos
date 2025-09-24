@@ -1,0 +1,37 @@
+PARSING
+
+	quotes inside token. ex : cd /e'tc' --> should become "cd /etc" but its "cd /e tc" 
+		+++DONE+++
+
+	./ --> should return "Is a directory. KO
+	./minishell KO
+
+	pipes without spaces and successive pipes
+
+	expand ($...) broke
+
+	redirections syntax errors
+
+BUILTINS
+
+	cd without arg --> should go to HOME
+	cd $HOME/42cursus --> cd $HOME/42cursus
+	'~' to interpret as HOME
+
+	exit with numeric argument --> wrong exit code
+
+	unset KO
+
+COMMANDS
+
+	whoami | grep $USER n'affiche rien ---->>> what is the command whoami?? should it be interpreted?
+
+
+EXIT_CODE
+
+	cmd success --> exit code 0
+	cmd failed --> exit code 1
+	syntax errors --> exit code should be 2
+	Is a directory --> exit code 126
+	command not found --> exit code 127
+	ctrl + C --> exit code 130 (128 + 2) SIGINT

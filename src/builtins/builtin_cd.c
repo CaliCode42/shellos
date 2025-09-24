@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:08:44 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/22 11:57:36 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/24 20:28:52 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,12 @@ int	builtin_cd(t_token *token, t_data *data)
 	}
 	else
 	{
-		if (token->next->to_expand == true)
-			path = expand_quotes(token->next->str, data, token);
-		else
+		// if (token->next->to_expand == true)
+		// 	path = expand_quotes(token->next->str, data, token->next);
+		// else
 			path = token->next->str;
 	}
-	if (is_valid_dir(path) != 1)
+	if (!is_valid_dir(path))
 	{
 		data->last_exit = 1;
 		return (data->last_exit);
@@ -164,6 +164,6 @@ int	builtin_cd(t_token *token, t_data *data)
 		update_pwd(data);
 		data->last_exit = 0;
 	}
-	// printf("exit code = %d\n", data->last_exit);
+	printf("exit code = %d\n", data->last_exit);
 	return (data->last_exit);
 }

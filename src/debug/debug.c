@@ -6,7 +6,7 @@
 /*   By: tcali <tcali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 13:28:45 by tcali             #+#    #+#             */
-/*   Updated: 2025/09/18 15:12:58 by tcali            ###   ########.fr       */
+/*   Updated: 2025/09/23 23:58:37 by tcali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	print_current_token(t_token *current)
 	else if (current->type == OR)
 		type_str = "OR";
 	printf("\n--------------\n");
-	printf("token : %s\n", current->str);
+	printf("token : [%s]\n", current->str);
 	printf("position      : %d\n", current->pos);
 	printf("type          : %s\n", type_str);
 	printf("input          : %d\n", current->input);
